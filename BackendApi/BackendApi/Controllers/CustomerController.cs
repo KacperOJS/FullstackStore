@@ -1,4 +1,5 @@
 ﻿using BackendApi.data;
+using BackendApi.models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendApi.Controllers
@@ -18,20 +19,21 @@ namespace BackendApi.Controllers
 	   [ProducesResponseType(500)]
 	   public IActionResult GetAllCustomers(){
 		try{
-			var customers =_context.Customers.OrderBy(e=>e.Id).ToList();
+			var customers =_context.Customers.OrderBy(e=>e.id).ToList();
 			return Ok(customers);
 		}
 		catch(Exception ex){
 			return StatusCode(500, ex.Message);
 		}
 	   }
-
-	   [HttpGet("{id}")]
+	   
+       [HttpPost]
 	   [ProducesResponseType(200)]
 	   [ProducesResponseType(500)]
-	   public IActionResult GetCustomerById(int id){
+	   public IActionResult CreateCustomer([FromBody] Customer customer){
 		try{
-			var customer = _context.customers.Where(e=>e.Id == id).FirstOrDefault();
+			_context.Customers.Add(customer);
+			_context.SaveChanges();
 			return Ok(customer);
 		}
 		catch(Exception ex){
@@ -39,8 +41,44 @@ namespace BackendApi.Controllers
 		}
 	   }
 
-	   [HttpPost]
+	   [HttpPut("{id}")]
+	   [ProducesResponseType(200)]
+	   [ProducesResponseType(500)]
+	   public IActionResult UpdateCustomer(int id, [FromBody] Customer customer){
+		try{
+			var existingCustomer = _context.Customers.Where(e=>e.id == id).FirstOrDefault();
+			if(existingCustomer == null){
+				return NotFound("Customer not found");
+			}
+			existingCustomer.name = customer.name;
+			existingCustomer.email = customer.email;
+			existingCustomer.phone = customer.phone;
+			_context.SaveChanges();			
+			return Ok(existingCustomer);
+		}
+		catch(Exception ex){
+			return StatusCode(500, ex.Message);
+		}
+	   }
+
+	   [HttpDelete("{id}")]
+	   [ProducesResponseType(200)]
+	   [ProducesResponseType(500)]
+	   public IActionResult DeleteCustomer(int id){
+		try{
+			var customerToDelete = _context.Customers.Where(e=>e.id == id).FirstOrDefault();
+			if(customerToDelete == null){
+				return NotFound("Customer not found");
+			}
+			_context.Customers.Remove(customerToDelete);		
+			_context.SaveChanges();
+			return Ok("Customer deleted successfully");
+		}
+		catch(Exception ex){
+			return StatusCode(500, ex.Message);
+		}
+	   }
+
 	   
-       
     }
 }

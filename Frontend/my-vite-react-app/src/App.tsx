@@ -8,6 +8,8 @@ import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import { CartProvider } from './context/CartContext';
 import './styles/global.css';
+import Register from './pages/Register';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
               <Route path="/products/:id" Component={ProductDetails} />
               <Route path="/cart" Component={CartPage} />
               <Route path="/checkout" Component={CheckoutPage} />
+              <Route path="/register" Component={Register} />
+				<Route path="/login" Component={Login} />
             </Routes>
           </main>
           <Footer />

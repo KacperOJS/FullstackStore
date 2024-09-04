@@ -5,9 +5,8 @@
     "\\BackendApi\\bin",
     "\\BackendApi\\Controllers",
     "\\BackendApi\\data",
-    "\\BackendApi\\Migrations",
     "\\BackendApi\\models"
   ],
-  "SelectedNode": "\\BackendApi\\Program.cs",
+  "SelectedNode": "\\BackendApi",
   "PreviewInSolutionExplorer": false
 }

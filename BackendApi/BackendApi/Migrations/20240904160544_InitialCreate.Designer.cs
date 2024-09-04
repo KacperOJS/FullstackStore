@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240904104440_InitialCreate")]
+    [Migration("20240904160544_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -56,35 +56,34 @@ namespace BackendApi.Migrations
 
             modelBuilder.Entity("BackendApi.models.Customer", b =>
                 {
-                    b.Property<Guid>("id")
+                    b.Property<int?>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsAdmin")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("id"));
+
+                    b.Property<bool?>("IsAdmin")
                         .HasColumnType("bit");
 
                     b.Property<string>("city")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("name")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("password")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("phone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("state")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("zipcode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");

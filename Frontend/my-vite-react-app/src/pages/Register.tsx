@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Register.css";
 
 const Register = () => {
+	const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -25,9 +26,12 @@ const Register = () => {
 	  }
   
 	  const data = await response.json();
+	  alert("Rejestracja udana");
+	  navigate("/login");
 	  console.log("Rejestracja udana:", data);
 	 
 	} catch (error) {
+	  alert("Błąd podczas rejestracji/Nazwa użytkownika lub email jest już zajęty");
 	  console.error("Błąd podczas rejestracji:", error);
 	 
 	}

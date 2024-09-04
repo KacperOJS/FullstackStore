@@ -31,14 +31,16 @@ namespace BackendApi.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
-                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    city = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    state = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    zipcode = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: true),
+                    phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    city = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    state = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    zipcode = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

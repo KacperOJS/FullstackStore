@@ -150,3 +150,10 @@ C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\obj\Debug\net7.0\sc
 C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\obj\Debug\net7.0\BackendApi.csproj.CopyComplete
 C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\obj\Debug\net7.0\BackendApi.genruntimeconfig.cache
 C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\obj\Debug\net7.0\ref\BackendApi.dll
+C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\System.Web.Cors.dll
+C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\System.Net.Http.Formatting.dll
+C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\System.Web.Http.dll
+C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\System.Web.Http.Cors.dll
+C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
+C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\BCrypt.Net-Next.dll

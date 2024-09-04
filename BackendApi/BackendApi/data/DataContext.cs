@@ -14,10 +14,5 @@ namespace BackendApi.data
         public DbSet<Sponsors> Sponsors { get; set;}
         
     }
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
-	{
-		modelBuilder.Entity<Customer>()
-			.Property(c => c.IsAdmin)
-			.HasDefaultValue(false);
-	}
+
 }

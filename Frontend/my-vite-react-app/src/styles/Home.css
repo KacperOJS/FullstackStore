@@ -1,0 +1,24 @@
+.home {
+	text-align: center;
+  }
+  
+  .hero {
+	padding: 80px 0;
+	background-color: var(--accent-color);
+  }
+  
+  .hero h1 {
+	font-size: 56px;
+	line-height: 1.07143;
+	font-weight: 600;
+	letter-spacing: -0.005em;
+	margin-bottom: 6px;
+  }
+  
+  .hero p {
+	font-size: 28px;
+	line-height: 1.10722;
+	font-weight: 400;
+	letter-spacing: .004em;
+	margin-bottom: 20px;
+  }

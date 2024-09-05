@@ -1,42 +1,54 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
-import Cookies from 'js-cookie';
+
+interface LoginResponse {
+  message: string;
+  userId?: number;
+}
+
 const Login = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     try {
       const response = await fetch("http://localhost:5250/api/Customer/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
       });
 
+      const data: LoginResponse = await response.json();
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(data.message || `HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      alert("Logowanie udane");
       console.log("Logowanie udane:", data);
       
-	  Cookies.set('token', data.token, { expires: 7, secure: true, sameSite: 'strict' });
-	  alert("Logowanie udane");
-      console.log("Token otrzymany i zapisany w cookies");
-      
-      // Przekierowanie na stronę główną po udanym logowaniu
+      // Save login info in localStorage
+      localStorage.setItem('isLoggedIn', 'true');
+      if (data.userId) {
+        localStorage.setItem('userId', data.userId.toString());
+      }
+
+      // Redirect to home page after successful login
       navigate('/');
     } catch (error) {
-      alert("Błąd podczas logowania. Sprawdź swoje dane.");
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Wystąpił nieznany błąd podczas logowania");
+      }
       console.error("Błąd podczas logowania:", error);
     }
   };
@@ -45,6 +57,7 @@ const Login = () => {
     <div className="login-page-container">
       <div className="login-page-form">
         <h2 className="login-page-title">Zaloguj się</h2>
+        {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="login-form-group">
             <input

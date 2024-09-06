@@ -79,56 +79,48 @@ namespace BackendApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] Customer customer)
         {
-            Console.WriteLine($"Login attempt for email: {customer.email}");
-
-            var user = await _context.Customers
-                .FirstOrDefaultAsync(c => c.email == customer.email);
-
-            if (user == null)
+            try
             {
-                Console.WriteLine("User not found");
-                return Unauthorized("Nieprawidłowy email lub hasło");
-            }
+                Console.WriteLine($"Login attempt for email: {customer.email}");
 
-            if (!VerifyPassword(customer.password, user.password))
-            {
-                Console.WriteLine("Invalid password");
-                return Unauthorized("Nieprawidłowy email lub hasło");
+                // Fetch the user by email
+                var user = await _context.Customers.FirstOrDefaultAsync(c => c.email == customer.email);
+
+                if (user == null)
+                {
+                    Console.WriteLine("User not found");
+                    return Unauthorized(new { message = "Nieprawidłowy email lub hasło" });
+                }
+
+                // Hash the input password and compare it with the stored hashed password
+                string hashedInputPassword = HashPassword(customer.password);
+
+                if (hashedInputPassword != user.password)
+                {
+                    Console.WriteLine("Invalid password");
+                    return Unauthorized(new { message = "Nieprawidłowy email lub hasło" });
+                }
+
+                // If login is successful
+                Console.WriteLine("Login successful");
+                return Ok(new { message = "Zalogowano pomyślnie", userId = user.id, CustomerName=user.name});
             }
-            return Ok(customer);
-            //var token = GenerateJwtToken(user);
-            //Console.WriteLine("Login successful, token generated");
-            //return Ok(new { token });
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in Login: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return StatusCode(500, new { message = "Wystąpił wewnętrzny błąd serwera" });
+            }
         }
 
-        private string GenerateJwtToken(Customer user)
-        {
-            // Get the secret key and expiration time from the configuration
-            var secretKey = _configuration["Jwt:Key"];
-            var expirationInMinutes = int.Parse(_configuration["Jwt:DurationInMinutes"]);
 
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.email),
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(expirationInMinutes),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
 
 
         private bool VerifyPassword(string inputPassword, string storedPassword)
         {
             return BCrypt.Net.BCrypt.Verify(inputPassword, storedPassword);
         }
+
 
         private string? HashPassword(string? password)
         {
@@ -143,7 +135,7 @@ namespace BackendApi.Controllers
      
 
 
-        [HttpPut("{id}")]
+       [HttpPut("{id}")]
 	   [ProducesResponseType(200)]
 	   [ProducesResponseType(500)]
 	   public IActionResult UpdateCustomer(int id, [FromBody] Customer customer){

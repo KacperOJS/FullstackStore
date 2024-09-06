@@ -5,6 +5,8 @@ import "../styles/Login.css";
 interface LoginResponse {
   message: string;
   userId?: number;
+  customerName?: string;
+  
 }
 
 const Login = () => {
@@ -34,15 +36,19 @@ const Login = () => {
       }
 
       console.log("Logowanie udane:", data);
-      
+   
+	  
       // Save login info in localStorage
       localStorage.setItem('isLoggedIn', 'true');
       if (data.userId) {
         localStorage.setItem('userId', data.userId.toString());
       }
+	  if(data.customerName){
+		localStorage.setItem('username',data.customerName)
+	  }
 
       // Redirect to home page after successful login
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

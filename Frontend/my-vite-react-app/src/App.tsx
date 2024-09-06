@@ -10,6 +10,8 @@ import { CartProvider } from './context/CartContext';
 import './styles/global.css';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 function App() {
   return (
@@ -25,7 +27,12 @@ function App() {
               <Route path="/cart" Component={CartPage} />
               <Route path="/checkout" Component={CheckoutPage} />
               <Route path="/register" Component={Register} />
-				<Route path="/login" Component={Login} />
+			  <Route path="/login" Component={Login} />
+			
+			  <Route element={<ProtectedRoute />}>
+				<Route path="/dashboard" element={<Dashboard />} />
+				{/* Dodaj więcej chronionych ścieżek tutaj */}
+				</Route>
             </Routes>
           </main>
           <Footer />

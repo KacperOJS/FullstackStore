@@ -6,6 +6,7 @@ interface LoginResponse {
   message: string;
   userId?: number;
   customerName?: string;
+  token?: string; // Add token to interface
   
 }
 
@@ -46,6 +47,7 @@ const Login = () => {
 	  if(data.customerName){
 		localStorage.setItem('username',data.customerName)
 	  }
+
 
       // Redirect to home page after successful login
       navigate('/dashboard');

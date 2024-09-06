@@ -15,7 +15,7 @@ const Dashboard: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userId');
-    navigate('/login');
+	window.location.reload();
   };
 
   return (

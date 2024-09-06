@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext'
 const Header = () => {
   const { cartItems } = useCart();
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
-  const location = useLocation();
+//   const location = useLocation();
 //   const isDashboard = location.pathname === '/dashboard';
   const isLoggedIn = localStorage.getItem('isLoggedIn');
  
@@ -19,8 +19,13 @@ const Header = () => {
             <li><Link to="/" className="nav-link">Strona główna</Link></li>
             <li><Link to="/produkty" className="nav-link">Produkty</Link></li>
             <li><Link to="/kontakt" className="nav-link">Kontakt</Link></li>
-            <li><Link to="/Login" className="nav-link nav-button">Logowanie</Link></li>
-            <li><Link to="/Register" className="nav-link nav-button nav-button-primary">Rejestracja</Link></li>
+			{!isLoggedIn && (
+              <>
+                <li><Link to="/Login" className="nav-link nav-button">Logowanie</Link></li>
+                <li><Link to="/Register" className="nav-link nav-button nav-button-primary">Rejestracja</Link></li>
+              </>
+            )}
+
             <li>
               <Link to="/koszyk" className="nav-link cart-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -157,3 +157,4 @@ C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\Sy
 C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\Newtonsoft.Json.dll
 C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
 C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\BCrypt.Net-Next.dll
+C:\Users\Kacper\Desktop\fullstackSklep\BackendApi\BackendApi\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

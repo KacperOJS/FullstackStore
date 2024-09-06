@@ -75,6 +75,20 @@ namespace BackendApi.Controllers
                 return StatusCode(500, "Wystąpił wewnętrzny błąd serwera");
             }
         }
+        //private string GenerateJwtToken(Customer customer)
+        //{
+        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("miska"));
+        //    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        //    var token = new JwtSecurityToken(
+        //        issuer: "rysiek",
+        //        audience: "dawid",
+        //        claims: new List<Claim>(),
+        //        expires: DateTime.Now.AddMinutes(30),
+        //        signingCredentials: creds);
+
+        //    return new JwtSecurityTokenHandler().WriteToken(token);
+        //}
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] Customer customer)
@@ -102,6 +116,7 @@ namespace BackendApi.Controllers
                 }
 
                 // If login is successful
+                //var token = GenerateJwtToken(user);
                 Console.WriteLine("Login successful");
                 return Ok(new { message = "Zalogowano pomyślnie", userId = user.id, CustomerName=user.name});
             }
@@ -113,7 +128,7 @@ namespace BackendApi.Controllers
             }
         }
 
-
+  
 
 
         private bool VerifyPassword(string inputPassword, string storedPassword)
@@ -131,6 +146,7 @@ namespace BackendApi.Controllers
                 return Convert.ToBase64String(hash);
             }
         }
+
 
      
 

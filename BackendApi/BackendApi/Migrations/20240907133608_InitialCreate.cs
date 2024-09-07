@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace BackendApi.Migrations
 {
     /// <inheritdoc />
@@ -69,7 +71,9 @@ namespace BackendApi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -88,6 +92,18 @@ namespace BackendApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sponsors", x => x.Id);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "DateTime", "Description", "IsAvailable", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 9, 7, 15, 36, 8, 835, DateTimeKind.Local).AddTicks(948), "Latest model with cutting-edge technology.", true, "Smartphone", 699 },
+                    { 2, new DateTime(2024, 9, 7, 15, 36, 8, 835, DateTimeKind.Local).AddTicks(1008), "High performance laptop for professionals.", true, "Laptop", 1299 },
+                    { 3, new DateTime(2024, 9, 7, 15, 36, 8, 835, DateTimeKind.Local).AddTicks(1011), "Noise-cancelling over-ear headphones.", true, "Headphones", 199 },
+                    { 4, new DateTime(2024, 9, 7, 15, 36, 8, 835, DateTimeKind.Local).AddTicks(1012), "Smartwatch with health tracking features.", false, "Smartwatch", 249 },
+                    { 5, new DateTime(2024, 9, 7, 15, 36, 8, 835, DateTimeKind.Local).AddTicks(1014), "Portable tablet with high-resolution display.", true, "Tablet", 499 }
                 });
         }
 

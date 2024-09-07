@@ -1,4 +1,5 @@
 ﻿using BackendApi.models;
+using BackendApi.SeedData;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackendApi.data
@@ -12,7 +13,14 @@ namespace BackendApi.data
         public DbSet<Products> Products { get; set; }
         public DbSet<ApprovalPayment> ApprovalPayment { get; set;}
         public DbSet<Sponsors> Sponsors { get; set;}
-        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            ProductSeed.Seed(modelBuilder);
+        }
+
     }
+ 
 
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240904160544_InitialCreate")]
+    [Migration("20240907133608_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -131,13 +131,66 @@ namespace BackendApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateTime = new DateTime(2024, 9, 7, 15, 36, 8, 835, DateTimeKind.Local).AddTicks(948),
+                            Description = "Latest model with cutting-edge technology.",
+                            IsAvailable = true,
+                            Name = "Smartphone",
+                            Price = 699
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateTime = new DateTime(2024, 9, 7, 15, 36, 8, 835, DateTimeKind.Local).AddTicks(1008),
+                            Description = "High performance laptop for professionals.",
+                            IsAvailable = true,
+                            Name = "Laptop",
+                            Price = 1299
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DateTime = new DateTime(2024, 9, 7, 15, 36, 8, 835, DateTimeKind.Local).AddTicks(1011),
+                            Description = "Noise-cancelling over-ear headphones.",
+                            IsAvailable = true,
+                            Name = "Headphones",
+                            Price = 199
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DateTime = new DateTime(2024, 9, 7, 15, 36, 8, 835, DateTimeKind.Local).AddTicks(1012),
+                            Description = "Smartwatch with health tracking features.",
+                            IsAvailable = false,
+                            Name = "Smartwatch",
+                            Price = 249
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DateTime = new DateTime(2024, 9, 7, 15, 36, 8, 835, DateTimeKind.Local).AddTicks(1014),
+                            Description = "Portable tablet with high-resolution display.",
+                            IsAvailable = true,
+                            Name = "Tablet",
+                            Price = 499
+                        });
                 });
 
             modelBuilder.Entity("BackendApi.models.Sponsors", b =>

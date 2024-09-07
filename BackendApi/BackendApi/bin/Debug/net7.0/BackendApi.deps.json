@@ -17,6 +17,7 @@
           "Microsoft.EntityFrameworkCore.Design": "7.0.20",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.20",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.20",
+          "Stripe.net": "45.11.0",
           "Swashbuckle.AspNetCore": "6.4.0",
           "System.IdentityModel.Tokens.Jwt": "8.0.2"
         },
@@ -518,6 +519,18 @@
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.2.22727"
+          }
+        }
+      },
+      "Stripe.net/45.11.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "System.Configuration.ConfigurationManager": "6.0.1"
+        },
+        "runtime": {
+          "lib/net6.0/Stripe.net.dll": {
+            "assemblyVersion": "45.11.0.0",
+            "fileVersion": "45.11.0.0"
           }
         }
       },
@@ -1093,6 +1106,13 @@
       "sha512": "sha512-QYFyxhaABwmq3p/21VrZNYvCg3DaEoN/wUuw5nmfAf0X3HLjgupwhkEWdgfb9nvGAUIv3osmZoD3kKl4jxEmYQ==",
       "path": "newtonsoft.json.bson/1.0.2",
       "hashPath": "newtonsoft.json.bson.1.0.2.nupkg.sha512"
+    },
+    "Stripe.net/45.11.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nTUZr5XBXqhgIzy5Bo2MvS3cEBCUKp9WiIzsb+d689/AGgy1cmasSAu4gNtLZm3tkJ/QuM4spH77uBdu1sRSRw==",
+      "path": "stripe.net/45.11.0",
+      "hashPath": "stripe.net.45.11.0.nupkg.sha512"
     },
     "Swashbuckle.AspNetCore/6.4.0": {
       "type": "package",

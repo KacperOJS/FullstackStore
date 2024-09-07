@@ -16,7 +16,7 @@ namespace BackendApi.SeedData
                     Description = "Latest model with cutting-edge technology.",
                     IsAvailable = true,
                     DateTime = DateTime.Now,
-                    ImageUrl = "https://example.com/images/smartphone.jpg" // Replace with actual image
+         
                 },
                 new Products
                 {
@@ -26,7 +26,7 @@ namespace BackendApi.SeedData
                     Description = "High performance laptop for professionals.",
                     IsAvailable = true,
                     DateTime = DateTime.Now,
-                    ImageUrl = "https://example.com/images/laptop.jpg" // Replace with actual image
+
                 },
                 new Products
                 {
@@ -36,7 +36,7 @@ namespace BackendApi.SeedData
                     Description = "Noise-cancelling over-ear headphones.",
                     IsAvailable = true,
                     DateTime = DateTime.Now,
-                    ImageUrl = "https://example.com/images/headphones.jpg" // Replace with actual image
+         
                 },
                 new Products
                 {
@@ -46,7 +46,7 @@ namespace BackendApi.SeedData
                     Description = "Smartwatch with health tracking features.",
                     IsAvailable = false,
                     DateTime = DateTime.Now,
-                    ImageUrl = "https://example.com/images/smartwatch.jpg" // Replace with actual image
+            
                 },
                 new Products
                 {
@@ -56,7 +56,7 @@ namespace BackendApi.SeedData
                     Description = "Portable tablet with high-resolution display.",
                     IsAvailable = true,
                     DateTime = DateTime.Now,
-                    ImageUrl = "https://example.com/images/tablet.jpg" // Replace with actual image
+          
                 }
             );
         }

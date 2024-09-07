@@ -9,7 +9,7 @@
         public Boolean IsAvailable { get; set; }
         public DateTime DateTime { get; set; }
 
-        public string ImageUrl { get; set; }
+        //public string ImageUrl { get; set; }
 
     }
 }

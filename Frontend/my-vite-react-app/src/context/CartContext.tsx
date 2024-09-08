@@ -4,7 +4,7 @@ import { createContext, useState, useContext } from 'react';
 interface CartItem {
   id: number;
   name: string;
-  price: number;
+price: number;
   quantity: number;
 }
 

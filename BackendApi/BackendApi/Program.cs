@@ -12,24 +12,28 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configure database context
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-// Konfiguracja CORS
+// Configure Stripe API Key (done in the code where Stripe is used)
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+// Configure CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Dodaj swój frontendowy adres
+        policy.WithOrigins("http://localhost:5173") // Replace with your frontend URL
               .AllowAnyMethod()
               .AllowAnyHeader()
-              .AllowCredentials(); // Jeśli używasz ciasteczek
+              .AllowCredentials(); // Include if you are using credentials
     });
 });
 
-// JWT Authentication
+// Configure JWT Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -53,8 +57,6 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -62,12 +64,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Użyj CORS przed innymi middleware
+// Use CORS before other middleware
 app.UseCors("AllowSpecificOrigin");
 
 app.UseHttpsRedirection();
+app.UseAuthentication(); // Ensure authentication is used
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+// Ensure Stripe API Key is set before any request
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];

@@ -12,9 +12,14 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './pages/ProtectedRoute';
+import PaymentSuccess from './pages/PaymentSuccess';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 
+const stripePromise = loadStripe('pk_test_51PfPjHRp6D9QDtZzHJa3oQEsr9HQA8f6XMiGqe3NxRBkPz3xaXrqsu9BlNnPefMeVxYuk55GKDMJsEXD9kK0gNlA007x6gK31v');
 function App() {
   return (
+<Elements stripe={stripePromise}>
     <CartProvider>
       <Router>
         <div className="app">
@@ -28,7 +33,7 @@ function App() {
               <Route path="/checkout" Component={CheckoutPage} />
               <Route path="/register" Component={Register} />
 			  <Route path="/login" Component={Login} />
-			
+			  <Route path="/payment-success" element={<PaymentSuccess />} />
 			  <Route element={<ProtectedRoute />}>
 				<Route path="/dashboard" element={<Dashboard />} />
 				{/* Dodaj więcej chronionych ścieżek tutaj */}
@@ -39,6 +44,7 @@ function App() {
         </div>
       </Router>
     </CartProvider>
+	</Elements>
   );
 }
 

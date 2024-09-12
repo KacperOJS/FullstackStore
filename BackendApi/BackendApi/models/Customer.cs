@@ -15,5 +15,6 @@ namespace BackendApi.models
         public string? city { get; set; }
         public string? state { get; set; }
         public string? zipcode { get; set; }
+        //public int? PremiumPoints { get; set; }
     }
 }

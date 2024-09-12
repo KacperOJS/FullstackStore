@@ -1,28 +1,22 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
-import { loadStripe } from '@stripe/stripe-js';
 import '../styles/Products.css';
-
-// Initialize Stripe with your public key
-const stripePromise = loadStripe('pk_test_51PfPjHRp6D9QDtZzNPBnPe1zJnxgu1fkpV7xE6l0kDJ0FAiHJNwbdT39T1CMrMVYtXov62LOADJLubZ5SbKVkhbi00KxUOuqH'); // Replace with your public key
 
 const Products: React.FC = () => {
   const { cartItems } = useCart();
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
   const handlePayment = async () => {
-    const stripe = await stripePromise;
-
     // Map cartItems to the structure required by Stripe
     const lineItems = cartItems.map(item => ({
-      price_data: {
-        currency: 'pln',
-        product_data: {
-          name: item.name,
+      priceData: {
+        currency: 'PLN',  
+        productData: {
+          name: item.name, 
         },
-        unit_amount: item.price * 100, // Stripe expects the amount in cents
+        unitAmount: item.price * 100,  
       },
-      quantity: item.quantity,
+      quantity: item.quantity,  
     }));
 
     try {

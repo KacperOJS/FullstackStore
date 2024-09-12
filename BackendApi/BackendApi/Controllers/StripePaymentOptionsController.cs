@@ -1,4 +1,5 @@
 ﻿using BackendApi.data;
+using BackendApi.models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
@@ -14,7 +15,7 @@ public class PaymentsController : ControllerBase
     private readonly IConfiguration _config;
     private readonly DataContext _context;
 
-    public PaymentsController(IConfiguration config,DataContext context)
+    public PaymentsController(IConfiguration config, DataContext context)
     {
         _config = config;
         _context = context;
@@ -71,7 +72,6 @@ public class PaymentsController : ControllerBase
             return BadRequest(new { error = e.Message });
         }
     }
-
     [HttpPost("webhook")]
     public async Task<IActionResult> HandleStripeWebhook()
     {
@@ -119,23 +119,39 @@ public class PaymentsController : ControllerBase
             switch (stripeEvent.Type)
             {
                 case Events.CheckoutSessionCompleted:
-                    var session = (Checkout.Session)stripeEvent.Data.Object;
+                    var session = (Stripe.Checkout.Session)stripeEvent.Data.Object;
 
-                    // Extract customer email or ID from the session
-                    var customerEmail = session.CustomerEmail; // Use CustomerEmail if available
-                                                               // Alternatively, fetch the customer ID and look up the email or other details if needed
+                    // Extract customer details
+                    var customerEmail = session.CustomerEmail;
                     var customerId = session.CustomerId;
+                    var paymentIntentId = session.PaymentIntentId;
+                    var amountTotal = session.AmountTotal; // Total amount in cents
+                    var currency = session.Currency;
+                    var paymentStatus = session.PaymentStatus;
 
-                    // Update premium points for the customer in your database
+                    // Find the customer in your database by their email
                     var customer = await _context.Customers
-                        .FirstOrDefaultAsync(c => c.Email == customerEmail || c.StripeCustomerId == customerId);
+                        .FirstOrDefaultAsync(c => c.email == customerEmail);
 
                     if (customer != null)
                     {
-                        // Update the customer's premium points
-                        customer.PremiumPoints += 10; // Example: add 10 points (update as needed)
+                        // Update the customer's premium points (or any other field)
+                        customer.phone = "MISKA"; // Example update
 
+                        // Save payment data in the Payments table
+                        var paymentRecord = new Payment
+                        {
+                            CustomerId = customerId,
+                            PaymentIntentId = paymentIntentId,
+                            Amount = (decimal)amountTotal,  // Store amount in your preferred format (convert to PLN)
+                            Currency = currency,
+                            PaymentStatus = paymentStatus,
+                            CreatedAt = DateTime.UtcNow
+                        };
+
+                        // Save both customer updates and payment details
                         _context.Customers.Update(customer);
+                        _context.Payments.Add(paymentRecord);
                         await _context.SaveChangesAsync();
                     }
                     else
@@ -159,6 +175,5 @@ public class PaymentsController : ControllerBase
             return StatusCode(500, new { error = e.Message });
         }
     }
-
-
 }
+

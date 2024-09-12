@@ -99,7 +99,7 @@ namespace BackendApi.Controllers
 
                 // Fetch the user by email
                 var user = await _context.Customers.FirstOrDefaultAsync(c => c.email == customer.email);
-
+       
                 if (user == null)
                 {
                     Console.WriteLine("User not found");
@@ -109,8 +109,8 @@ namespace BackendApi.Controllers
                 // Hash the input password and compare it with the stored hashed password
                 string hashedInputPassword = HashPassword(customer.password);
 
-                if (hashedInputPassword != user.password)
-                {
+                if (hashedInputPassword != user.password) 
+                { 
                     Console.WriteLine("Invalid password");
                     return Unauthorized(new { message = "Nieprawidłowy email lub hasło" });
                 }
@@ -118,7 +118,7 @@ namespace BackendApi.Controllers
                 // If login is successful
                 //var token = GenerateJwtToken(user);
                 Console.WriteLine("Login successful");
-                return Ok(new { message = "Zalogowano pomyślnie", userId = user.id, CustomerName=user.name});
+                return Ok(new { message = "Zalogowano pomyślnie", userId = user.id, CustomerName= user.name,CustomerEmail=user.email });
             }
             catch (Exception ex)
             {
@@ -148,30 +148,51 @@ namespace BackendApi.Controllers
         }
 
 
-     
 
 
-       [HttpPut("{id}")]
-	   [ProducesResponseType(200)]
-	   [ProducesResponseType(500)]
-	   public IActionResult UpdateCustomer(int id, [FromBody] Customer customer){
-		try{
-			var existingCustomer = _context.Customers.Where(e=>e.id == id).FirstOrDefault();
-			if(existingCustomer == null){
-				return NotFound("Customer not found");
-			}
-			existingCustomer.name = customer.name;
-			existingCustomer.email = customer.email;
-			existingCustomer.phone = customer.phone;
-			_context.SaveChanges();			
-			return Ok(existingCustomer);
-		}
-		catch(Exception ex){
-			return StatusCode(500, ex.Message);
-		}
-	   }
 
-	   [HttpDelete("{id}")]
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateCustomer(int id, [FromBody] Customer customer)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var existingCustomer = await _context.Customers.FindAsync(id);
+                if (existingCustomer == null)
+                {
+                    return NotFound("Customer not found");
+                }
+
+                // Update fields
+                existingCustomer.name = customer.name ?? existingCustomer.name;
+                existingCustomer.email = customer.email ?? existingCustomer.email;
+                existingCustomer.phone = customer.phone ?? existingCustomer.phone;
+
+                // Only update the password if it's provided
+                if (!string.IsNullOrEmpty(customer.password))
+                {
+                    existingCustomer.password = HashPassword(customer.password);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(existingCustomer);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Wystąpił wewnętrzny błąd serwera", details = ex.Message });
+            }
+        }
+
+        [HttpDelete("{id}")]
 	   [ProducesResponseType(200)]
 	   [ProducesResponseType(500)]
 	   public IActionResult DeleteCustomer(int id){

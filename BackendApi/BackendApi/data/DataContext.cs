@@ -13,6 +13,8 @@ namespace BackendApi.data
         public DbSet<Products> Products { get; set; }
         public DbSet<ApprovalPayment> ApprovalPayment { get; set;}
         public DbSet<Sponsors> Sponsors { get; set;}
+        public DbSet<Payment> Payments { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

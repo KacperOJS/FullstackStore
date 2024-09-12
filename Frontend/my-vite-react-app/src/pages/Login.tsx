@@ -7,6 +7,7 @@ interface LoginResponse {
   userId?: number;
   customerName?: string;
   token?: string; // Add token to interface
+  customerEmail?:string;
   
 }
 
@@ -37,8 +38,7 @@ const Login = () => {
       }
 
       console.log("Logowanie udane:", data);
-   
-	  
+ 
       // Save login info in localStorage
       localStorage.setItem('isLoggedIn', 'true');
       if (data.userId) {
@@ -47,6 +47,9 @@ const Login = () => {
 	  if(data.customerName){
 		localStorage.setItem('username',data.customerName)
 	  }
+	  if (data.customerEmail) {
+		localStorage.setItem('email', data.customerEmail);
+	}
 
 
       // Redirect to home page after successful login

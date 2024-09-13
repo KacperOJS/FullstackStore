@@ -2,20 +2,22 @@
 
 public class RedisCacheService
 {
-    private readonly IDatabase _cache;
+    private readonly IConnectionMultiplexer _redis;
 
     public RedisCacheService(IConnectionMultiplexer redis)
     {
-        _cache = redis.GetDatabase();
+        _redis = redis;
     }
 
-    public async Task SetCacheValueAsync(string key, string value, TimeSpan? expiry = null)
+    public async Task SetCacheValueAsync(string key, string value)
     {
-        await _cache.StringSetAsync(key, value, expiry);
+        var db = _redis.GetDatabase();
+        await db.StringSetAsync(key, value);
     }
 
     public async Task<string> GetCacheValueAsync(string key)
     {
-        return await _cache.StringGetAsync(key);
+        var db = _redis.GetDatabase();
+        return await db.StringGetAsync(key);
     }
 }

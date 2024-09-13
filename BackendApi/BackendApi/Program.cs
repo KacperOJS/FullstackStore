@@ -2,9 +2,10 @@ using BackendApi.data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using Stripe;
 using System.Text;
-using StackExchange.Redis;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,27 +19,28 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-// Configure Stripe API Key (done in the code where Stripe is used)
-builder.Services.AddSingleton<RedisCacheService>();
-builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+// Configure Stripe API Key
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
-
-
+// Configure Redis connection
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
     var configuration = ConfigurationOptions.Parse("localhost:6379", true);
     return ConnectionMultiplexer.Connect(configuration);
 });
 
+// Register RedisCacheService
+builder.Services.AddSingleton<RedisCacheService>();
+
 // Configure CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Replace with your frontend URL
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyMethod()
               .AllowAnyHeader()
-              .AllowCredentials(); // Include if you are using credentials
+              .AllowCredentials();
     });
 });
 
@@ -73,16 +75,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Use CORS before other middleware
-app.UseCors("AllowSpecificOrigin");
-
 app.UseHttpsRedirection();
-app.UseAuthentication(); // Ensure authentication is used
+app.UseCors("AllowSpecificOrigin");
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-
-// Ensure Stripe API Key is set before any request
-StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];

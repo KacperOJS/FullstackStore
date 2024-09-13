@@ -26,17 +26,32 @@ namespace BackendApi.Controllers
 	   [HttpGet]
 	   [ProducesResponseType(200)]
 	   [ProducesResponseType(500)]
-	   public async IActionResult GetAllCustomers(){
-		try{
-            var cacheKey = "customers";
-            var cachedCustomers  = await _rediscacheService.GetCacheValueAsync(cacheKey);
-            var customers =_context.Customers.OrderBy(e=>e.id).ToList();
-			return Ok(customers);
-		}
-		catch(Exception ex){
-			return StatusCode(500, ex.Message);
-		}
-	   }
+        public async Task<IActionResult> GetAllCustomers()
+        {
+            try
+            {
+                var cacheKey = "customers";
+                var cachedCustomers = await _rediscacheService.GetCacheValueAsync(cacheKey);
+
+                // Fetch customers from the database asynchronously
+                var customers = await _context.Customers.OrderBy(e => e.id).ToListAsync();
+                return Ok(customers);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet("cache-test")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CacheTest()
+        {
+            await _rediscacheService.SetCacheValueAsync("test-key", "test-value");
+            var value = await _rediscacheService.GetCacheValueAsync("test-key");
+            return Ok(value);
+        }
+
 
         [HttpPost]
         [ProducesResponseType(200)]

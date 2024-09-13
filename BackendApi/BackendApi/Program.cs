@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Stripe;
 using System.Text;
-
+using StackExchange.Redis;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -19,7 +19,16 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 // Configure Stripe API Key (done in the code where Stripe is used)
+builder.Services.AddSingleton<RedisCacheService>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var configuration = ConfigurationOptions.Parse("localhost:6379", true);
+    return ConnectionMultiplexer.Connect(configuration);
+});
 
 // Configure CORS
 builder.Services.AddCors(options =>

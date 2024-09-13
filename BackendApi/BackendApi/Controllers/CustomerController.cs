@@ -13,10 +13,12 @@ namespace BackendApi.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
+        private readonly RedisCacheService _rediscacheService;
         private readonly DataContext _context;
         private readonly IConfiguration _configuration;
-        public CustomerController(DataContext context,IConfiguration configuration)
+        public CustomerController(DataContext context,IConfiguration configuration,RedisCacheService redisCacheService)
         {
+            _rediscacheService = redisCacheService;
             _context = context;
             _configuration= configuration;
         }
@@ -24,9 +26,11 @@ namespace BackendApi.Controllers
 	   [HttpGet]
 	   [ProducesResponseType(200)]
 	   [ProducesResponseType(500)]
-	   public IActionResult GetAllCustomers(){
+	   public async IActionResult GetAllCustomers(){
 		try{
-			var customers =_context.Customers.OrderBy(e=>e.id).ToList();
+            var cacheKey = "customers";
+            var cachedCustomers  = await _rediscacheService.GetCacheValueAsync(cacheKey);
+            var customers =_context.Customers.OrderBy(e=>e.id).ToList();
 			return Ok(customers);
 		}
 		catch(Exception ex){

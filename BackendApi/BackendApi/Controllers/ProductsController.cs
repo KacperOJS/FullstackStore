@@ -22,7 +22,7 @@ namespace BackendApi.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public async IActionResult GetAllProducts()
+        public async Task<IActionResult> GetAllProducts()
         {
             var cacheKey = "Products";
             var db = _redis.GetDatabase();

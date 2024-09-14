@@ -1,8 +1,8 @@
 # Base image for runtime
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+ENV ASPNETCORE_ENVIRONMENT=Development
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+
 
 # SDK image for building the application
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build

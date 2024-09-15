@@ -23,10 +23,21 @@ builder.Services.AddDbContext<DataContext>(options =>
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 // Configure Redis connection
+
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
-    var configuration = ConfigurationOptions.Parse("localhost:6379", true);
-    return ConnectionMultiplexer.Connect(configuration);
+    try
+    {
+        var configuration = ConfigurationOptions.Parse("localhost:6379", true);
+        return ConnectionMultiplexer.Connect(configuration);
+    }
+    catch (RedisConnectionException ex)
+    {
+        // Log the exception (optional)
+        Console.WriteLine($"Redis connection failed: {ex.Message}");
+
+        return null;
+    }
 });
 
 // Register RedisCacheService

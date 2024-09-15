@@ -51,13 +51,17 @@ public class PaymentsController : ControllerBase
                 Quantity = item.quantity
             });
         }
-
+        var metadata = new Dictionary<string, string>
+                {
+                    { "userId", data.userId.ToString() } // Assuming data.userId contains the ID you want to pass
+                };
         var options = new SessionCreateOptions
         {
             LineItems = lineItems,
             Mode = "payment",
             SuccessUrl = data.successUrl,
             CancelUrl = data.cancelUrl,
+            Metadata = metadata,
         };
 
         var service = new SessionService();
@@ -65,6 +69,7 @@ public class PaymentsController : ControllerBase
         try
         {
             Session session = await service.CreateAsync(options);
+
             return Ok(new { url = session.Url });
         }
         catch (StripeException e)
@@ -75,26 +80,22 @@ public class PaymentsController : ControllerBase
     [HttpPost("webhook")]
     public async Task<IActionResult> HandleStripeWebhook()
     {
-        // Ensure that Request.Body is not null
-        if (Request.Body == null)
-        {
-            return BadRequest(new { error = "Request body is null." });
-        }
-
+        // Read the request body
         string json;
         using (var reader = new StreamReader(Request.Body))
         {
             json = await reader.ReadToEndAsync();
         }
 
-        // Ensure that Request.Headers and Stripe-Signature header are not null
-        if (Request.Headers["Stripe-Signature"].Count == 0)
+        // Ensure Stripe-Signature header is present
+        if (!Request.Headers.ContainsKey("Stripe-Signature"))
         {
             return BadRequest(new { error = "Stripe-Signature header is missing." });
         }
 
-        // Ensure _config is not null and contains the necessary configuration
-        if (_config == null || string.IsNullOrEmpty(_config["Stripe:WebhookSecret"]))
+        // Ensure the webhook secret is configured
+        var webhookSecret = _config["Stripe:WebhookSecret"];
+        if (string.IsNullOrEmpty(webhookSecret))
         {
             return StatusCode(500, new { error = "Webhook secret is not configured." });
         }
@@ -105,7 +106,7 @@ public class PaymentsController : ControllerBase
             stripeEvent = EventUtility.ConstructEvent(
                 json,
                 Request.Headers["Stripe-Signature"],
-                _config["Stripe:WebhookSecret"]
+                webhookSecret
             );
         }
         catch (StripeException e)
@@ -113,67 +114,58 @@ public class PaymentsController : ControllerBase
             return BadRequest(new { error = e.Message });
         }
 
-        try
+
+        // Process the event
+        if (stripeEvent.Type == Events.CheckoutSessionCompleted)
         {
-            // Process the event
-            switch (stripeEvent.Type)
+            try
             {
-                case Events.CheckoutSessionCompleted:
-                    var session = (Stripe.Checkout.Session)stripeEvent.Data.Object;
+                // Update phone number for customer with id = 1
+                var session = stripeEvent.Data.Object as Session;
+                if (session != null)
+                {
+                    Console.WriteLine($"Webhook received with Metadata: {Newtonsoft.Json.JsonConvert.SerializeObject(session.finduserbyid)}"); // Log metadata
 
-                    // Extract customer details
-                    var customerEmail = session.CustomerEmail;
-                    var customerId = session.CustomerId;
-                    var paymentIntentId = session.PaymentIntentId;
-                    var amountTotal = session.AmountTotal; // Total amount in cents
-                    var currency = session.Currency;
-                    var paymentStatus = session.PaymentStatus;
+                    var userId = session.Metadata.ContainsKey("userId")
+                        ? int.Parse(session.Metadata["userId"])
+                        : -1;
 
-                    // Find the customer in your database by their email
                     var customer = await _context.Customers
-                        .FirstOrDefaultAsync(c => c.email == customerEmail);
+                        .FirstOrDefaultAsync(c => c.id == userId);
 
                     if (customer != null)
                     {
-                        // Update the customer's premium points (or any other field)
-                        customer.phone = "MISKA"; // Example update
-
-                        // Save payment data in the Payments table
-                        var paymentRecord = new Payment
-                        {
-                            CustomerId = customerId,
-                            PaymentIntentId = paymentIntentId,
-                            Amount = (decimal)amountTotal,  // Store amount in your preferred format (convert to PLN)
-                            Currency = currency,
-                            PaymentStatus = paymentStatus,
-                            CreatedAt = DateTime.UtcNow
-                        };
-
-                        // Save both customer updates and payment details
+                        customer.phone = "MISKA2";
                         _context.Customers.Update(customer);
-                        _context.Payments.Add(paymentRecord);
                         await _context.SaveChangesAsync();
+                        Console.WriteLine("Customer phone updated to MISKA.");
                     }
                     else
                     {
-                        // Handle case where customer is not found
-                        return NotFound(new { error = "Customer not found." });
+                        Console.WriteLine($"Customer not found with ID: {userId}");
                     }
-                    break;
-
-                // Handle other event types if needed
-                default:
-                    Console.WriteLine($"Unhandled event type: {stripeEvent.Type}");
-                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Session object is null.");
+                }
             }
-
-            return Ok();
+            catch (Exception e)
+            {
+                // Log or handle exceptions as needed
+                Console.WriteLine($"Error updating customer phone: {e.Message}");
+                return StatusCode(500, new { error = e.Message });
+            }
         }
-        catch (Exception e)
+        else
         {
-            // Log or handle exceptions as needed
-            return StatusCode(500, new { error = e.Message });
+            // Log unhandled event types
+            Console.WriteLine($"Unhandled event type: {stripeEvent.Type}");
         }
+
+        return Ok();
     }
+
+
 }
 

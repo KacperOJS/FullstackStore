@@ -1,5 +1,6 @@
 ﻿using BackendApi.data;
 using BackendApi.models;
+using BackendApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
@@ -20,7 +21,6 @@ public class PaymentsController : ControllerBase
         _config = config;
         _context = context;
         StripeConfiguration.ApiKey = config["Stripe:SecretKey"];
-
     }
 
     [HttpPost("create-checkout-session")]
@@ -51,17 +51,18 @@ public class PaymentsController : ControllerBase
                 Quantity = item.quantity
             });
         }
-        var metadata = new Dictionary<string, string>
-                {
-                    { "userId", data.userId.ToString() } // Assuming data.userId contains the ID you want to pass
-                };
+
         var options = new SessionCreateOptions
         {
             LineItems = lineItems,
             Mode = "payment",
             SuccessUrl = data.successUrl,
             CancelUrl = data.cancelUrl,
-            Metadata = metadata,
+            // Add metadata to store finduserbyid
+            Metadata = new Dictionary<string, string>
+            {
+                { "finduserbyid", data.finduserbyid.ToString() } // Ensure it is converted to string
+            }
         };
 
         var service = new SessionService();
@@ -70,13 +71,15 @@ public class PaymentsController : ControllerBase
         {
             Session session = await service.CreateAsync(options);
 
-            return Ok(new { url = session.Url });
+            // Return the session URL and include finduserbyid in the response
+            return Ok(new { url = session.Url, finduserbyid = data.finduserbyid });
         }
         catch (StripeException e)
         {
             return BadRequest(new { error = e.Message });
         }
     }
+
     [HttpPost("webhook")]
     public async Task<IActionResult> HandleStripeWebhook()
     {
@@ -114,40 +117,67 @@ public class PaymentsController : ControllerBase
             return BadRequest(new { error = e.Message });
         }
 
-
         // Process the event
         if (stripeEvent.Type == Events.CheckoutSessionCompleted)
         {
             try
             {
-                // Update phone number for customer with id = 1
                 var session = stripeEvent.Data.Object as Session;
-                if (session != null)
+
+                // Retrieve finduserbyid from metadata
+
+                
+
+
+                var finduserbyid = session.Metadata["finduserbyid"];
+     
+               
+                // Retrieve the PaymentIntent associated with the session
+                var paymentIntentId = session.PaymentIntentId;
+                var paymentIntentService = new PaymentIntentService();
+                var paymentIntent = await paymentIntentService.GetAsync(paymentIntentId);
+
+
+           
+
+
+
+                var totalAmountSpent = paymentIntent.AmountReceived / 100; // Divide by 100 to remove last two zeros
+
+
+                var paymentLog = new LogsOfPaymentCustomer
                 {
-                    Console.WriteLine($"Webhook received with Metadata: {Newtonsoft.Json.JsonConvert.SerializeObject(session.finduserbyid)}"); // Log metadata
+                    Date = DateTime.UtcNow,
+                    Amount = (int)totalAmountSpent,
+                    Status = PaymentStatus.Completed, // Assuming the payment is completed
+                    Customer = await _context.Customers.FirstOrDefaultAsync(c => c.id == int.Parse(finduserbyid))
+                };
 
-                    var userId = session.Metadata.ContainsKey("userId")
-                        ? int.Parse(session.Metadata["userId"])
-                        : -1;
+                await _context.PaymentLog.AddAsync(paymentLog);
+                await _context.SaveChangesAsync();
 
-                    var customer = await _context.Customers
-                        .FirstOrDefaultAsync(c => c.id == userId);
+                // Find and update the customer
 
-                    if (customer != null)
-                    {
-                        customer.phone = "MISKA2";
-                        _context.Customers.Update(customer);
-                        await _context.SaveChangesAsync();
-                        Console.WriteLine("Customer phone updated to MISKA.");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Customer not found with ID: {userId}");
-                    }
+
+
+                var customer = await _context.Customers
+                    .FirstOrDefaultAsync(c => c.id == int.Parse(finduserbyid));
+                if (customer != null)
+                {
+                  
+                    // Update the customer's spend
+                    customer.Spend = (customer.Spend ?? 0) + (int)totalAmountSpent;
+                  
+
+                    // Update the customer in the database
+                    _context.Customers.Update(customer);
+                    await _context.SaveChangesAsync();
+
+                    Console.WriteLine("Customer spend updated.");
                 }
                 else
                 {
-                    Console.WriteLine("Session object is null.");
+                    Console.WriteLine("Customer not found.");
                 }
             }
             catch (Exception e)
@@ -165,7 +195,4 @@ public class PaymentsController : ControllerBase
 
         return Ok();
     }
-
-
 }
-

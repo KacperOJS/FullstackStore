@@ -19,7 +19,7 @@ const Header = () => {
             <li><Link to="/" className="nav-link">Strona główna</Link></li>
             <li><Link to="/produkty" className="nav-link">Produkty</Link></li>
             <li><Link to="/kontakt" className="nav-link">Kontakt</Link></li>
-			{!isLoggedIn && (
+			{isLoggedIn !== 'true' && (
               <>
                 <li><Link to="/Login" className="nav-link nav-button">Logowanie</Link></li>
                 <li><Link to="/Register" className="nav-link nav-button nav-button-primary">Rejestracja</Link></li>

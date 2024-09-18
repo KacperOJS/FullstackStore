@@ -8,7 +8,7 @@ namespace BackendApi.models
 
         public string? email { get; set; }
         public string? password { get; set; }
-		
+		public int? Spend { get; set; }
         public Boolean? IsAdmin { get; set; }
 
         public string? phone { get; set; }

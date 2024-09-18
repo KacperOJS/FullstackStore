@@ -5,7 +5,7 @@ import '../styles/Products.css';
 const Products: React.FC = () => {
   const { cartItems } = useCart();
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-
+  const finduserbyid = localStorage.getItem('userId');
   const handlePayment = async () => {
     // Map cartItems to the structure required by Stripe
     const lineItems = cartItems.map(item => ({
@@ -27,8 +27,9 @@ const Products: React.FC = () => {
         },
         body: JSON.stringify({
           lineItems,
-          successUrl: `${window.location.origin}/payment-success`,
-          cancelUrl: `${window.location.origin}/payment-cancel`,
+          successUrl: `${window.location.origin}/payment-success/`,
+        cancelUrl: `${window.location.origin}/payment-cancel/`,
+		  finduserbyid,
         }),
       });
 

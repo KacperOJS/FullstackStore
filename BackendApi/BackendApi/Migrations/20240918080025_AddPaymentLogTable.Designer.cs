@@ -4,6 +4,7 @@ using BackendApi.data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240918080025_AddPaymentLogTable")]
+    partial class AddPaymentLogTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,9 +91,6 @@ namespace BackendApi.Migrations
 
                     b.Property<bool?>("IsAdmin")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("Spend")
-                        .HasColumnType("int");
 
                     b.Property<string>("city")
                         .HasColumnType("nvarchar(max)");
@@ -211,7 +211,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 1,
-                            DateTime = new DateTime(2024, 9, 18, 10, 26, 33, 302, DateTimeKind.Local).AddTicks(3606),
+                            DateTime = new DateTime(2024, 9, 18, 10, 0, 25, 738, DateTimeKind.Local).AddTicks(6299),
                             Description = "Latest model with cutting-edge technology.",
                             IsAvailable = true,
                             Name = "Smartphone",
@@ -220,7 +220,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 2,
-                            DateTime = new DateTime(2024, 9, 18, 10, 26, 33, 302, DateTimeKind.Local).AddTicks(3639),
+                            DateTime = new DateTime(2024, 9, 18, 10, 0, 25, 738, DateTimeKind.Local).AddTicks(6358),
                             Description = "High performance laptop for professionals.",
                             IsAvailable = true,
                             Name = "Laptop",
@@ -229,7 +229,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 3,
-                            DateTime = new DateTime(2024, 9, 18, 10, 26, 33, 302, DateTimeKind.Local).AddTicks(3642),
+                            DateTime = new DateTime(2024, 9, 18, 10, 0, 25, 738, DateTimeKind.Local).AddTicks(6360),
                             Description = "Noise-cancelling over-ear headphones.",
                             IsAvailable = true,
                             Name = "Headphones",
@@ -238,7 +238,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 4,
-                            DateTime = new DateTime(2024, 9, 18, 10, 26, 33, 302, DateTimeKind.Local).AddTicks(3643),
+                            DateTime = new DateTime(2024, 9, 18, 10, 0, 25, 738, DateTimeKind.Local).AddTicks(6362),
                             Description = "Smartwatch with health tracking features.",
                             IsAvailable = false,
                             Name = "Smartwatch",
@@ -247,7 +247,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 5,
-                            DateTime = new DateTime(2024, 9, 18, 10, 26, 33, 302, DateTimeKind.Local).AddTicks(3645),
+                            DateTime = new DateTime(2024, 9, 18, 10, 0, 25, 738, DateTimeKind.Local).AddTicks(6364),
                             Description = "Portable tablet with high-resolution display.",
                             IsAvailable = true,
                             Name = "Tablet",

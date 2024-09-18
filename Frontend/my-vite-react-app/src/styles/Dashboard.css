@@ -81,15 +81,15 @@
 	background-color: #f1f1f1;
   }
   
-  .status-completed {
+  .status1 {
 	color: green;
   }
   
-  .status-pending {
+  .status2 {
 	color: orange;
   }
   
-  .status-failed {
+  .status3 {
 	color: red;
   }
   

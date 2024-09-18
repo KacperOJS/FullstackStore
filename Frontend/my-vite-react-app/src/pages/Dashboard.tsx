@@ -4,12 +4,34 @@ import '../styles/Dashboard.css';
 import EditModal from './EditModal';
 import '../styles/EditModal.css';
 
+  
+interface Transaction {
+	id: number;
+	date: string;
+	amount: string;
+	status: string;
+  }
+
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState<any>(null);
   const [transactions, setTransactions] = useState<any[]>([]);
+  const [transactions2, setTransactions2] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+
+  useEffect(() => {
+    logDataUserTransactions();
+  }, []);
+
+  const logDataUserTransactions = async ()=>{
+    const response = await fetch("http://localhost:5250/api/Logs/paymentlogs");
+	const data: Transaction[] = await response.json();
+	const userId = localStorage.getItem('userId');
+	const filteredData = data.filter(transaction => transaction.customer.id === Number(userId));  
+	setTransactions2(filteredData);
+	console.log(filteredData);
+  }
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (!isLoggedIn) {
@@ -85,13 +107,17 @@ const Dashboard: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction) => (
+            {transactions2.map((transaction) => (
               <tr key={transaction.id}>
                 <td>{transaction.date}</td>
                 <td>{transaction.amount}</td>
-                <td className={`status-${transaction.status.toLowerCase()}`}>
-                  {transaction.status}
-                </td>
+				<td className={`status${transaction.status}`}>
+              	{transaction.status === 1 ? 'Completed' : 
+               transaction.status === 2 ? 'Pending' : 
+               transaction.status === 3 ? 'Failed' : 
+               'Unknown'}
+            </td>
+			
               </tr>
             ))}
           </tbody>

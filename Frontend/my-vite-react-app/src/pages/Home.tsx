@@ -14,7 +14,10 @@ interface Product {
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const { addToCart } = useCart(); // Get addToCart function from context
-
+  const checkIfUserIsAvailable = () => {
+    const getuser = localStorage.getItem("userId");
+    return getuser !== null; // Zmiana: zwraca true, jeśli użytkownik jest dostępny
+  }
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -48,7 +51,7 @@ const Home = () => {
               <span className={`availability-dot ${product.isAvailable ? 'available-green' : 'unavailable-red'}`}></span>
               <span>{product.isAvailable ? 'Dostępny' : 'Niedostępny'}</span>
             </div>
-            <button onClick={() => ShowInBasket(product)} className="product-buy-button"  disabled={!product.isAvailable} >Kup Produkt</button>
+            <button onClick={() => ShowInBasket(product)} className="product-buy-button"  disabled={!product.isAvailable || !checkIfUserIsAvailable()} >{checkIfUserIsAvailable() ? 'Kup Produkt' : 'Zaloguj się'}</button>
           </div>
         ))}
       </div>

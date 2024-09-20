@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import '../styles/Home.css';
 import { useCart } from '../context/CartContext'; // Import the useCart hook
 
@@ -18,11 +18,13 @@ const Home = () => {
     const getuser = localStorage.getItem("userId");
     return getuser !== null; // Zmiana: zwraca true, jeśli użytkownik jest dostępny
   }
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
-  const fetchProducts = async () => {
+  
+useEffect(()=>{
+	fetchProducts();
+},[])
+
+  const fetchProducts = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:5250/api/Products');
       const data: Product[] = await response.json();
@@ -30,7 +32,10 @@ const Home = () => {
     } catch (error) {
       console.error('Error fetching products:', error);
     }
-  };
+  },[]);
+
+
+  const memoizedProducts =  useMemo(()=>products,[products])
 
   const ShowInBasket = (product: Product) => {
     addToCart({ ...product, quantity: 1 }); // Add product to cart with quantity
@@ -42,7 +47,7 @@ const Home = () => {
       <p className="home-page-description">Znajdź najlepsze produkty w najlepszych cenach.</p>
 
       <div className="product-list-container">
-        {products.map((product) => (
+        {memoizedProducts.map((product) => (
           <div key={product.id} className="product-card">
             <h3 className="product-name">{product.name}</h3>
             <p className="product-description">{product.description}</p>

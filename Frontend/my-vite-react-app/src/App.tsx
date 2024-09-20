@@ -16,6 +16,7 @@ import PaymentSuccess from './pages/payment-success';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import Paymentcancel from './pages/payment-cancel';
+import AdminPage from './pages/AdminPage';
 
 const stripePromise = loadStripe('pk_test_51PfPjHRp6D9QDtZzHJa3oQEsr9HQA8f6XMiGqe3NxRBkPz3xaXrqsu9BlNnPefMeVxYuk55GKDMJsEXD9kK0gNlA007x6gK31v');
 function App() {
@@ -38,8 +39,10 @@ function App() {
 			  <Route path="/payment-success" element={<Paymentcancel />} />
 			  <Route element={<ProtectedRoute />}>
 				<Route path="/dashboard" element={<Dashboard />} />
+				<Route path="/adminPanel" element={<AdminPage/>}/>
 				{/* Dodaj więcej chronionych ścieżek tutaj */}
 				</Route>
+				
             </Routes>
           </main>
           <Footer />

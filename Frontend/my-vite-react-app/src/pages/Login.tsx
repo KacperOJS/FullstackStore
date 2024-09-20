@@ -6,9 +6,8 @@ interface LoginResponse {
   message: string;
   userId?: number;
   customerName?: string;
-  token?: string; // Add token to interface
-  customerEmail?:string;
-  
+  token?: string;
+  customerEmail?: string;
 }
 
 const Login = () => {
@@ -19,8 +18,7 @@ const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const loginWithAPI = async (email: string, password: string) => {
     setError(null);
     try {
       const response = await fetch("http://localhost:5250/api/Customer/login", {
@@ -28,7 +26,7 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ email, password }),
       });
 
       const data: LoginResponse = await response.json();
@@ -37,23 +35,21 @@ const Login = () => {
         throw new Error(data.message || `HTTP error! status: ${response.status}`);
       }
 
-      console.log("Logowanie udane:", data);
- 
       // Save login info in localStorage
       localStorage.setItem('isLoggedIn', 'true');
       if (data.userId) {
         localStorage.setItem('userId', data.userId.toString());
       }
-	  if(data.customerName){
-		localStorage.setItem('username',data.customerName)
-	  }
-	  if (data.customerEmail) {
-		localStorage.setItem('email', data.customerEmail);
-	}
+      if (data.customerName) {
+        localStorage.setItem('username', data.customerName);
+      }
+      if (data.customerEmail) {
+        localStorage.setItem('email', data.customerEmail);
+      }
 
-
-      // Redirect to home page after successful login
+      // Redirect to the dashboard after successful login
       navigate('/dashboard');
+	  window.location.reload();
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -62,6 +58,31 @@ const Login = () => {
       }
       console.error("Błąd podczas logowania:", error);
     }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    loginWithAPI(form.email, form.password); // Normal login with provided credentials
+
+  };
+
+  const HandleLoginCustomer = () => {
+
+    const demoCustomerCredentials = {
+      email: "user@gmail.com",
+      password: "abc123", 
+    };
+    loginWithAPI(demoCustomerCredentials.email, demoCustomerCredentials.password);
+
+  };
+
+  const HandleLoginAdmin = () => {
+    const demoAdminCredentials = {
+      email: "admin@gmail.com",
+      password: "abc123",
+    };
+    loginWithAPI(demoAdminCredentials.email, demoAdminCredentials.password);
+
   };
 
   return (
@@ -98,6 +119,15 @@ const Login = () => {
         <p className="login-home-link">
           lub wróć do <Link to="/">Strony głównej</Link>
         </p>
+        <p className="login-home-link">Demo data testing</p>
+        <div className="demo-buttons" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <button type="button" className="demo-customer-button" onClick={HandleLoginCustomer}>
+            Demo Zaloguj się jako customer
+          </button>
+          <button type="button" className="demo-admin-button" onClick={HandleLoginAdmin}>
+            Demo Zaloguj się jako administrator
+          </button>
+        </div>
       </div>
     </div>
   );

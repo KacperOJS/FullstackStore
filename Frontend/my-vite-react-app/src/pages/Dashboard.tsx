@@ -10,12 +10,12 @@ interface Transaction {
 	date: string;
 	amount: string;
 	status: string;
+	customer:any;
   }
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState<any>(null);
-  const [transactions, setTransactions] = useState<any[]>([]);
   const [transactions2, setTransactions2] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -46,11 +46,6 @@ const Dashboard: React.FC = () => {
       email,
     });
 
-    setTransactions([
-      { id: 1, date: '2024-09-01', amount: '50 PLN', status: 'Completed' },
-      { id: 2, date: '2024-09-05', amount: '100 PLN', status: 'Pending' },
-      { id: 3, date: '2024-09-10', amount: '75 PLN', status: 'Failed' },
-    ]);
   }, [navigate]);
 
   const handleLogout = () => {
@@ -79,7 +74,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h1>Client Dashboard</h1>
+        <h2>Client Dashboard</h2>
         <button className="dashboard-logout-button" onClick={handleLogout}>
           Logout
         </button>

@@ -56,6 +56,7 @@
   .nav-button-primary:hover {
 	background-color: #0077ed;
   }
+  
   .cart-icon {
 	position: relative;
 	display: flex;
@@ -77,3 +78,21 @@
 	font-size: 12px;
 	font-weight: bold;
   }
+  
+  .profile-link {
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* Center icon and text */
+  }
+  
+  .profile-text {
+	visibility: hidden; /* Hide text by default */
+	opacity: 0;
+	transition: visibility 0s, opacity 0.3s ease; /* Smooth transition */
+  }
+  
+  .profile-link:hover .profile-text {
+	visibility: visible; /* Show text on hover */
+	opacity: 1;
+  }
+  

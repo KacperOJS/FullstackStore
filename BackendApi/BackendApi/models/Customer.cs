@@ -1,4 +1,6 @@
 ﻿
+using BackendApi.Models;
+
 namespace BackendApi.models
 {
     public class Customer
@@ -15,6 +17,8 @@ namespace BackendApi.models
         public string? city { get; set; }
         public string? state { get; set; }
         public string? zipcode { get; set; }
-        //public int? PremiumPoints { get; set; }
+
+   
+
     }
 }

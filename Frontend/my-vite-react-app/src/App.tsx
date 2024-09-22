@@ -3,7 +3,7 @@ import Header from './Components/Header';
 import Footer from './Components/Foooter';
 import Home from './pages/Home';
 import Products from './pages/Products';
-import ProductDetails from './pages/ProductDetails';
+import ProductDetails from './pages/ProductPaymentDetails';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import { CartProvider } from './context/CartContext';
@@ -19,37 +19,37 @@ import Paymentcancel from './pages/payment-cancel';
 import AdminPage from './pages/AdminPage';
 
 const stripePromise = loadStripe('pk_test_51PfPjHRp6D9QDtZzHJa3oQEsr9HQA8f6XMiGqe3NxRBkPz3xaXrqsu9BlNnPefMeVxYuk55GKDMJsEXD9kK0gNlA007x6gK31v');
+
 function App() {
   return (
-<Elements stripe={stripePromise}>
-    <CartProvider>
-      <Router>
-        <div className="app">
-          <Header />
-          <main style={{height:'92vh'}}>
-            <Routes>
-              <Route path="/" Component={Home} />
-              <Route path="/products" Component={Products} />
-              <Route path="/products/:id" Component={ProductDetails} />
-              <Route path="/cart" Component={CartPage} />
-              <Route path="/checkout" Component={CheckoutPage} />
-              <Route path="/register" Component={Register} />
-			  <Route path="/login" Component={Login} />
-			  <Route path="/payment-success" element={<PaymentSuccess />} />
-			  <Route path="/payment-success" element={<Paymentcancel />} />
-			  <Route element={<ProtectedRoute />}>
-				<Route path="/dashboard" element={<Dashboard />} />
-				<Route path="/adminPanel" element={<AdminPage/>}/>
-				{/* Dodaj więcej chronionych ścieżek tutaj */}
-				</Route>
-				
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </CartProvider>
-	</Elements>
+    <Elements stripe={stripePromise}>
+      <CartProvider>
+        <Router>
+          <div className="app">
+            <Header />
+            <main style={{ minHeight: 'calc(100vh - 150px)' }}> {/* Adjust height based on header and footer sizes */}
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/PaymentDetails" element={<ProductDetails />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/payment-success" element={<PaymentSuccess />} />
+                <Route path="/payment-cancel" element={<Paymentcancel />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/adminPanel" element={<AdminPage />} />
+                  {/* Add more protected routes here */}
+                </Route>
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </Router>
+      </CartProvider>
+    </Elements>
   );
 }
 

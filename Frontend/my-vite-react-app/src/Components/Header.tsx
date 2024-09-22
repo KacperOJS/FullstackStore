@@ -14,11 +14,15 @@ const Header = () => {
     <header className="header">
       <div className="container">
         <h1 className="logo">FPS-Shop</h1>
+
         <nav>
           <ul className="nav-list">
             <li><Link to="/" className="nav-link">Strona główna</Link></li>
             <li><Link to="/produkty" className="nav-link">Produkty</Link></li>
             <li><Link to="/kontakt" className="nav-link">Kontakt</Link></li>
+			<input type="search" placeholder='Find Your Product' onChange={()=>{
+			
+		}}/>
 			{isLoggedIn !== 'true' && (
               <>
                 <li><Link to="/Login" className="nav-link nav-button">Logowanie</Link></li>

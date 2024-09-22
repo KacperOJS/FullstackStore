@@ -212,23 +212,42 @@ namespace BackendApi.Controllers
         }
 
         [HttpDelete("{id}")]
-	   [ProducesResponseType(200)]
-	   [ProducesResponseType(500)]
-	   public IActionResult DeleteCustomer(int id){
-		try{
-			var customerToDelete = _context.Customers.Where(e=>e.id == id).FirstOrDefault();
-			if(customerToDelete == null){
-				return NotFound("Customer not found");
-			}
-			_context.Customers.Remove(customerToDelete);		
-			_context.SaveChanges();
-			return Ok("Customer deleted successfully");
-		}
-		catch(Exception ex){
-			return StatusCode(500, ex.Message);
-		}
-	   }
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public IActionResult DeleteCustomer(int id)
+        {
+            try
+            {
+                var customerToDelete = _context.Customers.FirstOrDefault(e => e.id == id);
+                if (customerToDelete == null)
+                {
+                    return NotFound("Customer not found");
+                }
 
-	   
+                // Manually delete all logs related to this customer
+                var logsToDelete = _context.PaymentLog.Where(log => log.Customer.id == id).ToList();
+                _context.PaymentLog.RemoveRange(logsToDelete);
+
+                // Now delete the customer
+                _context.Customers.Remove(customerToDelete);
+                _context.SaveChanges();
+
+                return Ok("Customer deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting customer: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+
+
+
     }
 }

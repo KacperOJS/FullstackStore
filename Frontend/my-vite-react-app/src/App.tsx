@@ -17,20 +17,27 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import Paymentcancel from './pages/payment-cancel';
 import AdminPage from './pages/AdminPage';
+import { useState } from 'react';
+import Contact from './pages/Contact';
+import About from './pages/AboutPage';
+
 
 const stripePromise = loadStripe('pk_test_51PfPjHRp6D9QDtZzHJa3oQEsr9HQA8f6XMiGqe3NxRBkPz3xaXrqsu9BlNnPefMeVxYuk55GKDMJsEXD9kK0gNlA007x6gK31v');
 
 function App() {
+	const [searchQuery, setSearchQuery] = useState('');
   return (
     <Elements stripe={stripePromise}>
       <CartProvider>
         <Router>
           <div className="app">
-            <Header />
+            <Header setSearchQuery={setSearchQuery} />
             <main style={{ minHeight: 'calc(100vh - 150px)' }}> {/* Adjust height based on header and footer sizes */}
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home searchQuery={searchQuery} />} />
+                <Route path="/kontakt" element={<Contact />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/about" element={<About />} />
                 <Route path="/products/PaymentDetails" element={<ProductDetails />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />

@@ -1,0 +1,37 @@
+.payment-success-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh; /* Full viewport height */
+	background-color: #f0f8ff; /* Light background */
+	text-align: center;
+  }
+  
+  .success-title {
+	font-size: 2rem;
+	color: #28a745; /* Green color for success */
+	margin-bottom: 1rem;
+  }
+  
+  .success-message {
+	font-size: 1.2rem;
+	color: #333; /* Dark text for readability */
+	margin-bottom: 2rem;
+  }
+  
+  .btn-return {
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+	color: white;
+	background-color: #007bff; /* Bootstrap primary color */
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+  }
+  
+  .btn-return:hover {
+	background-color: #0056b3; /* Darker shade on hover */
+  }
+  

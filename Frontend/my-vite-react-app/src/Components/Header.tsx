@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import '../styles/Header.css'
 import { useCart } from '../context/CartContext'
 
-const Header = () => {
+const Header = ({ setSearchQuery }: { setSearchQuery: (query: string) => void }) => {
   const { cartItems } = useCart();
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 //   const location = useLocation();
@@ -18,11 +18,15 @@ const Header = () => {
         <nav>
           <ul className="nav-list">
             <li><Link to="/" className="nav-link">Strona główna</Link></li>
-            <li><Link to="/produkty" className="nav-link">Produkty</Link></li>
             <li><Link to="/kontakt" className="nav-link">Kontakt</Link></li>
-			<input type="search" placeholder='Find Your Product' onChange={()=>{
-			
-		}}/>
+			<li><Link to="/about" className="nav-link">O Nas</Link></li>
+            <li><Link to="/faq" className="nav-link">FAQ</Link></li>
+            <li><Link to="/blog" className="nav-link">Blog</Link></li>
+			<input
+              type="search"
+              placeholder="Find Your Product"
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
 			{isLoggedIn !== 'true' && (
               <>
                 <li><Link to="/Login" className="nav-link nav-button">Logowanie</Link></li>

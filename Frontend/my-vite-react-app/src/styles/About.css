@@ -1,0 +1,55 @@
+.about-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+	font-family: 'Arial', sans-serif;
+	line-height: 1.6;
+  }
+  
+  h1, h2 {
+	color: #333;
+  }
+  
+  h1 {
+	font-size: 2.5rem;
+	margin-bottom: 20px;
+  }
+  
+  h2 {
+	font-size: 2rem;
+	margin-top: 20px;
+	margin-bottom: 10px;
+  }
+  
+  .about-intro,
+  .about-our-mission,
+  .about-our-history,
+  .about-our-team,
+  .about-what-we-offer,
+  .about-our-commitment,
+  .about-get-in-touch {
+	margin-bottom: 30px;
+  }
+  
+  .team-members {
+	list-style: none;
+	padding: 0;
+  }
+  
+  .team-members li {
+	margin: 10px 0;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #f9f9f9;
+  }
+  
+  a {
+	color: #007bff;
+	text-decoration: none;
+  }
+  
+  a:hover {
+	text-decoration: underline;
+  }
+  

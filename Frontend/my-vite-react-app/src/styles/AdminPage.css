@@ -1,10 +1,145 @@
+/* AdminPage.css */
+
 /* Main container */
 .admin-dashboard-container {
 	padding: 20px;
-	font-family: Arial, sans-serif;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background-color: #f8f9fa;
+	min-height: 100vh;
+	box-sizing: border-box;
   }
   
-  /* Blurred background */
+  /* Page title */
+  .dashboard-title {
+	text-align: center;
+	margin-bottom: 40px;
+	font-size: 32px;
+	font-weight: bold;
+	color: #343a40;
+  }
+  
+  /* Chart section */
+  .dashboard-charts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 40px;
+	justify-content: center;
+	margin-bottom: 50px;
+  }
+  
+  /* Individual chart wrapper */
+  .chart-wrapper {
+	width: 45%;
+	min-width: 300px;
+	background-color: #ffffff;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Chart title */
+  .chart-title {
+	text-align: center;
+	margin-bottom: 20px;
+	font-size: 24px;
+	font-weight: 600;
+	color: #495057;
+  }
+  
+  /* Chart container */
+  .chart-container {
+	position: relative;
+	height: 400px; /* Adjust as needed */
+	width: 100%;
+  }
+  
+  /* User table section */
+  .user-table-title {
+	text-align: center;
+	margin-bottom: 20px;
+	font-size: 26px;
+	font-weight: bold;
+	color: #343a40;
+  }
+  
+  /* Users table */
+  .user-table {
+	width: 100%;
+	max-width: 1000px;
+	margin: 0 auto 50px auto;
+	border-collapse: collapse;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* Table headers and cells */
+  .user-table th,
+  .user-table td {
+	border: 1px solid #dee2e6;
+	padding: 12px 15px;
+	text-align: left;
+	vertical-align: middle;
+	color: #495057;
+  }
+  
+  /* Table header */
+  .user-table th {
+	background-color: #e9ecef;
+	font-weight: 600;
+  }
+  
+  /* Alternate row colors */
+  .user-table tr:nth-child(even) {
+	background-color: #f8f9fa;
+  }
+  
+  /* Hover effect on rows */
+  .user-table tr:hover {
+	background-color: #f1f3f5;
+  }
+  
+  /* Button styles */
+  .btn-edit,
+  .btn-delete {
+	padding: 8px 16px;
+	margin: 0 5px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background-color 0.3s ease;
+  }
+  
+  /* Edit button */
+  .btn-edit {
+	background-color: #28a745;
+	color: white;
+  }
+  
+  .btn-edit:hover:not(:disabled) {
+	background-color: #218838;
+  }
+  
+  .btn-edit:disabled {
+	background-color: #a5d6a7;
+	cursor: not-allowed;
+  }
+  
+  /* Delete button */
+  .btn-delete {
+	background-color: #dc3545;
+	color: white;
+  }
+  
+  .btn-delete:hover:not(:disabled) {
+	background-color: #c82333;
+  }
+  
+  .btn-delete:disabled {
+	background-color: #ef9a9a;
+	cursor: not-allowed;
+  }
+  
+  /* Modal overlay */
   .modal-overlay {
 	position: fixed;
 	top: 0;
@@ -16,122 +151,134 @@
 	z-index: 999; /* Make sure the overlay is behind the modal but above the rest of the page */
   }
   
-  /* Page title */
-  .dashboard-title {
-	text-align: center;
-	margin-bottom: 20px;
-	font-size: 28px;
-	font-weight: bold;
-  }
-  
-  /* Chart section */
-  .dashboard-charts {
-	display: flex;
-	justify-content: space-around;
-	margin-bottom: 40px;
-  }
-  
-  .chart-wrapper {
-	width: 45%;
-  }
-  
-  .chart-title {
-	text-align: center;
-	margin-bottom: 10px;
-	font-size: 22px;
-	font-weight: 600;
-  }
-  
-  /* User table section */
-  .user-table-title {
-	text-align: center;
-	margin-bottom: 20px;
-	font-size: 24px;
-	font-weight: bold;
-  }
-  
-  .user-table {
-	width: 100%;
-	border-collapse: collapse;
-  }
-  
-  .user-table th,
-  .user-table td {
-	border: 1px solid #ddd;
-	padding: 12px;
-	text-align: left;
-  }
-  
-  .user-table th {
-	background-color: #f4f4f4;
-  }
-  
-  .user-table tr:nth-child(even) {
-	background-color: #f9f9f9;
-  }
-  
-  .user-table tr:hover {
-	background-color: #f1f1f1;
-  }
-  
-  /* Button styles */
-  .btn-edit,
-  .btn-delete {
-	padding: 6px 12px;
-	border: none;
-	cursor: pointer;
-	font-size: 14px;
-  }
-  
-  .btn-edit {
-	background-color: #4caf50;
-	color: white;
-  }
-  
-  .btn-delete {
-	background-color: #f44336;
-	color: white;
-  }
-  
-  .btn-edit:hover {
-	background-color: #45a049;
-  }
-  
-  .btn-delete:hover {
-	background-color: #e53935;
-  }
-  
   /* Modal styles */
   .modal {
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-color: white;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	background-color: #ffffff;
+	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 	z-index: 1000; /* Ensure the modal is above the blur overlay */
+	width: 90%;
+	max-width: 500px;
+	animation: fadeIn 0.3s ease-in-out;
   }
   
   /* Modal content */
   .modal-content {
 	display: flex;
 	flex-direction: column;
+	gap: 15px;
+  }
+  
+  /* Labels in modal */
+  .modal-content label {
+	font-weight: 600;
+	color: #343a40;
+  }
+  
+  /* Inputs in modal */
+  .modal-content input {
+	padding: 10px 12px;
+	border: 1px solid #ced4da;
+	border-radius: 4px;
+	font-size: 16px;
+	outline: none;
+	transition: border-color 0.3s ease;
+  }
+  
+  .modal-content input:focus {
+	border-color: #80bdff;
+  }
+  
+  /* Modal buttons container */
+  .modal-buttons {
+	display: flex;
+	justify-content: flex-end;
 	gap: 10px;
   }
   
   /* Close button for modal */
   .btn-close {
-	margin-top: 10px;
-	padding: 5px 10px;
-	background-color: red;
+	padding: 8px 16px;
+	background-color: #6c757d;
 	color: white;
 	border: none;
+	border-radius: 4px;
 	cursor: pointer;
+	transition: background-color 0.3s ease;
   }
   
   .btn-close:hover {
-	background-color: darkred;
+	background-color: #5a6268;
+  }
+  
+  /* Loading and error messages */
+  .loading, .error-message {
+	text-align: center;
+	font-size: 1.5em;
+	margin-top: 50px;
+  }
+  
+  .error-message {
+	color: #dc3545;
+  }
+  
+  /* Keyframes for modal fade-in animation */
+  @keyframes fadeIn {
+	from {
+	  opacity: 0;
+	  transform: translate(-50%, -60%);
+	}
+	to {
+	  opacity: 1;
+	  transform: translate(-50%, -50%);
+	}
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+	.dashboard-charts {
+	  flex-direction: column;
+	  align-items: center;
+	}
+  
+	.chart-wrapper {
+	  width: 80%;
+	}
+  }
+  
+  @media (max-width: 768px) {
+	.dashboard-charts {
+	  flex-direction: column;
+	  align-items: center;
+	}
+  
+	.chart-wrapper {
+	  width: 90%;
+	}
+  
+	.user-table th, .user-table td {
+	  padding: 8px 10px;
+	}
+  
+	.modal {
+	  padding: 20px;
+	}
+  
+	.dashboard-title {
+	  font-size: 28px;
+	}
+  
+	.chart-title {
+	  font-size: 20px;
+	}
+  
+	.user-table-title {
+	  font-size: 22px;
+	}
   }
   

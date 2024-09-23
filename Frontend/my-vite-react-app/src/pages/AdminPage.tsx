@@ -1,130 +1,195 @@
-import { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
-import 'chart.js/auto'; // Import chart.js for chart support
+// AdminPage.tsx
+
+import React, { useState, useEffect } from 'react';
+import { Line, Doughnut } from 'react-chartjs-2'; // Import Doughnut chart
+import 'chart.js/auto'; // Import Chart.js for chart support
 import '../styles/AdminPage.css'; // Import CSS
 
-const AdminPage = () => {
-  const [moneyData, setMoneyData] = useState<number[]>([0, 0, 0]);
-  const [userData, setUserData] = useState<number[]>([0, 0, 0]);
-  const [users, setUsers] = useState<any[]>([]);
-  const [selectedUser, setSelectedUser] = useState<any>(null); // State for the selected user
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // State for modal visibility
-  const [actionType, setActionType] = useState<string>(''); // State to distinguish between edit and delete actions
-  const [editForm, setEditForm] = useState({ name: '', email: '' }); // Form state for editing
+// Define interfaces for data structures
+interface PaymentLog {
+  date: string; // ISO date string
+  amount: number;
+}
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  spend: number;
+  phone: string;
+  registrationDate: string; // ISO date string
+}
+
+const AdminPage: React.FC = () => {
+  // State for daily payment totals
+  const [moneyData, setMoneyData] = useState<number[]>([]);
+  const [paymentLabels, setPaymentLabels] = useState<string[]>([]);
+
+  // State for daily user registrations
+  const [userRegistrationCounts, setUserRegistrationCounts] = useState<number[]>([]);
+  const [userRegistrationDetails, setUserRegistrationDetails] = useState<Record<string, string[]>>({});
+  const [userRegistrationLabels, setUserRegistrationLabels] = useState<string[]>([]);
+
+  // State for all users
+  const [users, setUsers] = useState<User[]>([]);
+
+  // Modal-related states
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [actionType, setActionType] = useState<string>('');
+  const [editForm, setEditForm] = useState({ name: '', email: '' });
+
+  // Loading and error states
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchChartData = async () => {
-      const fetchedMoneyData = await fetch('http://localhost:5250/api/Logs/paymentlogs').then(res => res.json());
+      try {
+        // Fetch payment logs
+        const fetchedMoneyData: PaymentLog[] = await fetch('http://localhost:5250/api/Logs/paymentlogs')
+          .then(res => res.json());
 
-      const sortedMoneyData = fetchedMoneyData.sort((a: any, b: any) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      });
+        // Process daily payments
+        const dailyPayments: Record<string, number> = {};
 
-      const todayAmount = sortedMoneyData
-        .filter((e: any) => isToday(new Date(e.date)))
-        .map((e: any) => e.amount);
+        fetchedMoneyData.forEach((log) => {
+          const logDate = new Date(log.date).toLocaleDateString(); // e.g., "9/23/2024"
+          dailyPayments[logDate] = (dailyPayments[logDate] || 0) + log.amount;
+        });
 
-      const sevenDaysAmount = sortedMoneyData
-        .filter((e: any) => isWithinDays(new Date(e.date), 7))
-        .map((e: any) => e.amount);
+        // Sort dates in ascending order
+        const sortedPaymentDates = Object.keys(dailyPayments).sort(
+          (a, b) => new Date(a).getTime() - new Date(b).getTime()
+        );
 
-      const thirtyDaysAmount = sortedMoneyData
-        .filter((e: any) => isWithinDays(new Date(e.date), 30))
-        .map((e: any) => e.amount);
+        const sortedDailyPayments = sortedPaymentDates.map(date => dailyPayments[date]);
 
-      setMoneyData([todayAmount, sevenDaysAmount, thirtyDaysAmount].map(arr => arr.reduce((acc:any, val:any) => acc + val, 0)));
+        setMoneyData(sortedDailyPayments);
+        setPaymentLabels(sortedPaymentDates);
 
-      const fetchedUserData = await fetch('/api/users/stats').then(res => res.json());
+        // Fetch all users
+        const fetchedUsers: User[] = await fetch('http://localhost:5250/api/Customer')
+          .then(res => res.json());
 
-      const userToday = fetchedUserData.today;
-      const userSevenDays = fetchedUserData.last7Days;
-      const userThirtyDays = fetchedUserData.last30Days;
+        // Filter out unnecessary fields by mapping
+        const filteredUsers: User[] = fetchedUsers.map(user => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          spend: user.spend ,
+          phone: user.phone,
+          registrationDate: user.registrationDate,
+        }));
 
-      setUserData([userToday, userSevenDays, userThirtyDays]);
-    };
+        setUsers(filteredUsers);
 
-    const fetchAllUsers = async () => {
-      const fetchedUsers = await fetch('http://localhost:5250/api/Customer').then(res => res.json());
-      setUsers(fetchedUsers);
+        // Process daily user registrations
+        const dailyUserRegistrations: Record<string, string[]> = {};
+
+        filteredUsers.forEach((user) => {
+          const regDate = new Date(user.registrationDate).toLocaleDateString();
+          if (!dailyUserRegistrations[regDate]) {
+            dailyUserRegistrations[regDate] = [];
+          }
+          dailyUserRegistrations[regDate].push(user.name);
+        });
+
+        // Sort dates in ascending order
+        const sortedUserDates = Object.keys(dailyUserRegistrations).sort(
+          (a, b) => new Date(a).getTime() - new Date(b).getTime()
+        );
+
+        const sortedDailyUserRegistrations = sortedUserDates.map(date => dailyUserRegistrations[date].length);
+
+        setUserRegistrationCounts(sortedDailyUserRegistrations);
+        setUserRegistrationDetails(dailyUserRegistrations);
+        setUserRegistrationLabels(sortedUserDates);
+      } catch (err) {
+        console.error('Error fetching chart data:', err);
+        setError('Failed to load data. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchChartData();
-    fetchAllUsers();
   }, []);
 
-  // Helper functions for filtering dates
-  const isToday = (date: Date) => {
-    const today = new Date();
-    return date.toDateString() === today.toDateString();
-  };
-
-  const isWithinDays = (date: Date, days: number) => {
-    const today = new Date();
-    const daysAgo = new Date(today.setDate(today.getDate() - days));
-    return date >= daysAgo;
-  };
-
-  // Function to handle the "Edit" and "Delete" button click
-  const handleActionClick = (user: any, action: string) => {
-    setSelectedUser(user); // Set the selected user data
-    setActionType(action); // Set the action type (edit or delete)
+  // Handler for action buttons (Edit/Delete)
+  const handleActionClick = (user: User, action: string) => {
+    setSelectedUser(user);
+    setActionType(action);
     if (action === 'edit') {
-      setEditForm({ name: user.name, email: user.email }); // Initialize the form with user data
+      setEditForm({ name: user.name, email: user.email });
     }
-    setIsModalOpen(true);  // Show the modal
+    setIsModalOpen(true);
   };
 
-  // Function to close the modal
+  // Close modal
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
   };
 
-  // Function to handle edit form submission
-  const handleEditSubmit = async (e: any) => {
+  // Handle edit form submission
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Send updated data to API
-    const response = await fetch(`http://localhost:5250/api/Customer/${selectedUser.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(editForm),
-    });
+    if (!selectedUser) return;
 
-    if (response.ok) {
-      const updatedUser = await response.json();
-      setUsers(prev => prev.map(user => (user.id === updatedUser.id ? updatedUser : user))); // Update user in the state
-      closeModal();
-    } else {
+    try {
+      const response = await fetch(`http://localhost:5250/api/Customer/${selectedUser.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editForm),
+      });
+
+      if (response.ok) {
+        const updatedUser: User = await response.json();
+        setUsers(prev => prev.map(user => (user.id === updatedUser.id ? updatedUser : user)));
+        closeModal();
+      } else {
+        const errorText = await response.text();
+        alert(`Failed to update user: ${errorText}`);
+      }
+    } catch (err) {
+      console.error('Error updating user:', err);
       alert('Failed to update user');
     }
   };
 
-  // Function to handle delete confirmation
+  // Handle delete confirmation
   const handleDeleteConfirm = async () => {
-    if (window.confirm(`Are you sure you want to delete ${selectedUser?.name}? This action cannot be undone.`)) {
+    if (!selectedUser) return;
+
+    if (window.confirm(`Are you sure you want to delete user "${selectedUser.name}"? This action cannot be undone.`)) {
+      try {
         const response = await fetch(`http://localhost:5250/api/Customer/${selectedUser.id}`, {
-            method: 'DELETE',
+          method: 'DELETE',
         });
 
         if (response.ok) {
-            setUsers(prev => prev.filter(user => user.id !== selectedUser.id)); // Remove user from the state
-            closeModal();
+          setUsers(prev => prev.filter(user => user.id !== selectedUser.id));
+          closeModal();
         } else {
-            const errorText = await response.text(); // Get error message
-            alert(`Failed to delete user: ${errorText}`);
+          const errorText = await response.text();
+          alert(`Failed to delete user: ${errorText}`);
         }
+      } catch (err) {
+        console.error('Error deleting user:', err);
+        alert('Failed to delete user');
+      }
     }
-};
+  };
 
-
-  // Define chart data and options
+  // Prepare chart data for daily payments
   const moneyChartData = {
-    labels: ['Today', 'Last 7 Days', 'Last 30 Days'],
+    labels: paymentLabels, // Use actual dates
     datasets: [
       {
-        label: 'Total Amount of Money',
+        label: 'Daily Payment Amounts',
         data: moneyData,
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -133,12 +198,13 @@ const AdminPage = () => {
     ],
   };
 
+  // Prepare chart data for daily user registrations (Line Chart)
   const userChartData = {
-    labels: ['Today', 'Last 7 Days', 'Last 30 Days'],
+    labels: userRegistrationLabels, // Use actual dates
     datasets: [
       {
-        label: 'Total Users Increase/Decrease',
-        data: userData,
+        label: 'Daily New User Registrations',
+        data: userRegistrationCounts,
         borderColor: 'rgba(153, 102, 255, 1)',
         backgroundColor: 'rgba(153, 102, 255, 0.2)',
         fill: true,
@@ -146,89 +212,193 @@ const AdminPage = () => {
     ],
   };
 
+  // Prepare chart data for daily user registrations (Doughnut Chart)
+  const getRandomColor = () => {
+	const letters = '0123456789ABCDEF';
+	let color = '#';
+	for (let i = 0; i < 6; i++) {
+	  color += letters[Math.floor(Math.random() * 16)];
+	}
+	return color;
+  };
+  
+  const userDoughnutData = {
+	labels: [], // No user names as labels
+	datasets: [
+	  {
+		label: 'Daily New User Registrations',
+		data: userRegistrationCounts,
+		backgroundColor: users.map(() => getRandomColor()), // Generate random colors
+		borderColor: '#fff', // Add border color for better contrast
+		borderWidth: 2,
+	  },
+	],
+  };
+  
+
+  // Customize chart options
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Amount / Count',
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
+        },
+      },
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          // Customize tooltip labels
+          label: (tooltipItem: any) => {
+            const datasetLabel = tooltipItem.dataset.label;
+            if (datasetLabel === 'Daily Payment Amounts') {
+              return `Payment: $${tooltipItem.raw}`;
+            } else if (datasetLabel === 'Daily New User Registrations') {
+              const dateKey = userChartData.labels[tooltipItem.dataIndex];
+              const userNames = userRegistrationDetails[dateKey] || [];
+              return `Users: ${tooltipItem.raw}\nNames: ${userNames.join(', ')}`;
+            }
+            return '';
+          },
+        },
+        // Enable multi-line tooltips
+        mode: 'index' as const,
+        intersect: false,
+      },
+      legend: {
+        display: true,
+        position: 'top' as const,
+      },
+    },
+  };
+
   return (
     <div className="admin-dashboard-container">
       <h1 className="dashboard-title">Admin Dashboard</h1>
 
-      <div className="dashboard-charts">
-        <div className="chart-wrapper">
-          <h2 className="chart-title">Total Money Stats</h2>
-          <Line data={moneyChartData} />
-        </div>
-
-        <div className="chart-wrapper">
-          <h2 className="chart-title">User Stats</h2>
-          <Line data={userChartData} />
-        </div>
-      </div>
-
-      <h2 className="user-table-title">All Users</h2>
-      <table className="user-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>
-                <button
-                  onClick={() => handleActionClick(user, 'edit')}
-                  className="btn-edit"
-                  disabled={user.admin === 1}
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleActionClick(user, 'delete')}
-                  className="btn-delete"
-                  disabled={user.admin === 1}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {isModalOpen && (
+      {loading ? (
+        <div className="loading">Loading data...</div>
+      ) : error ? (
+        <div className="error-message">{error}</div>
+      ) : (
         <>
-          <div className="modal-overlay"></div> {/* Blurred background */}
-          <div className="modal">
-            <div className="modal-content">
-              {actionType === 'edit' ? (
-                <form onSubmit={handleEditSubmit}>
-                  <label>Name:</label>
-                  <input
-                    type="text"
-                    value={editForm.name}
-                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                  /><br/>
-                  <label>Email:</label>
-                  <input
-                    type="email"
-                    value={editForm.email}
-                    onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                  /><br/>
-                  <button type="submit" className="btn-edit">Save Changes</button>
-                </form>
-              ) : (
-                <>
-                  <p>Are you sure you want to delete user {selectedUser?.name}?</p>
-                  <button onClick={handleDeleteConfirm} className="btn-delete">Confirm Delete</button>
-                </>
-              )}
-              <button className="btn-close" onClick={closeModal}>Close</button>
+          <div className="dashboard-charts">
+            {/* Daily Payment Chart */}
+            <div className="chart-wrapper">
+              <h2 className="chart-title">Daily Payment Stats</h2>
+              <div className="chart-container">
+                <Line data={moneyChartData} options={chartOptions} />
+              </div>
+            </div>
+
+            {/* User Growth Stats - Line Chart */}
+          
+
+            {/* User Growth Stats - Doughnut Chart */}
+            <div className="chart-wrapper">
+              <h2 className="chart-title">User Growth Stats (Doughnut)</h2>
+              <div className="chart-container">
+                <Doughnut data={userDoughnutData} options={chartOptions} />
+              </div>
             </div>
           </div>
+
+          {/* Users Table */}
+          <h2 className="user-table-title">All Users</h2>
+          <table className="user-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Spend</th>
+                <th>Phone</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map(user => (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+				  <td>{user.spend > 0 ? `$${user.spend}` : '$'}</td> {/* Display $ for spend of 0 */}
+				  <td>{user.phone || 'null'}</td> {/* Show 'null' if phone is empty */}
+                  <td>
+                    <button
+                      onClick={() => handleActionClick(user, 'edit')}
+                      className="btn-edit"
+                      disabled={false} /* Adjust based on your logic */
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleActionClick(user, 'delete')}
+                      className="btn-delete"
+                      disabled={false} /* Adjust based on your logic */
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Modal for Edit/Delete Actions */}
+          {isModalOpen && selectedUser && (
+            <>
+              <div className="modal-overlay" onClick={closeModal}></div>
+              <div className="modal">
+                <div className="modal-content">
+                  {actionType === 'edit' ? (
+                    <form onSubmit={handleEditSubmit}>
+                      <label htmlFor="name">Name:</label>
+                      <input
+                        id="name"
+                        type="text"
+                        value={editForm.name}
+                        onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                        required
+                      />
+<br/>
+                      <label htmlFor="email">Email:</label>
+                      <input
+                        id="email"
+                        type="email"
+                        value={editForm.email}
+                        onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                        required
+                      />
+
+                      <div className="modal-buttons">
+                        <button type="submit" className="btn-edit">Save Changes</button>
+                        <button type="button" className="btn-close" onClick={closeModal}>Cancel</button>
+                      </div>
+                    </form>
+                  ) : (
+                    <>
+                      <p>Are you sure you want to delete user "{selectedUser.name}"?</p>
+                      <div className="modal-buttons">
+                        <button onClick={handleDeleteConfirm} className="btn-delete">Confirm Delete</button>
+                        <button className="btn-close" onClick={closeModal}>Cancel</button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

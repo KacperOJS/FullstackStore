@@ -16,24 +16,38 @@ const Contact: React.FC = () => {
     if (isLoggedIn) {
       setFormData({ name: username, email: userMail, message: '' });
     }
-  }, [isLoggedIn, username, userMail]); // Add userMail as a dependency
+  }, [isLoggedIn, username, userMail]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
       setError('All fields are required!');
       return;
     }
 
-    // Simulate form submission
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
-    setError('');
-    setFormData({ name: '', email: '', message: '' });
+    try {
+      const response = await fetch('http://localhost:5250/api/Contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      setSubmitted(true);
+      setError('');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      setError('Failed to send message. Please try again later.');
+    }
   };
 
   return (
@@ -62,7 +76,7 @@ const Contact: React.FC = () => {
               onChange={handleChange}
               required
               className="form-input"
-			  disabled={isLoggedIn} // Disable if logged in
+              disabled={isLoggedIn} // Disable if logged in
             />
           </div>
 
@@ -76,7 +90,7 @@ const Contact: React.FC = () => {
               onChange={handleChange}
               required
               className="form-input"
-			  disabled={isLoggedIn} // Disable if logged in
+              disabled={isLoggedIn} // Disable if logged in
             />
           </div>
 

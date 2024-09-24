@@ -14,15 +14,16 @@ interface Product {
 const Home = ({ searchQuery }: { searchQuery: string }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const { addToCart } = useCart(); // Get addToCart function from context
-  const checkIfUserIsAvailable = () => {
-    const getuser = localStorage.getItem("userId");
-    return getuser !== null; // Zmiana: zwraca true, jeśli użytkownik jest dostępny
+
+  // Function to check if user is logged in
+  const isUserLoggedIn = () => {
+    const userId = localStorage.getItem("userId");
+    return userId !== null; // Check if the user is logged in
   }
 
-  
-useEffect(()=>{
-	fetchProducts();
-},[])
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -32,7 +33,7 @@ useEffect(()=>{
     } catch (error) {
       console.error('Error fetching products:', error);
     }
-  },[]);
+  }, []);
 
   const filteredProducts = useMemo(() => {
     return products.filter(product =>
@@ -40,10 +41,12 @@ useEffect(()=>{
     );
   }, [products, searchQuery]);
 
-  const memoizedProducts =  useMemo(()=>products,[products])
-
   const ShowInBasket = (product: Product) => {
-    addToCart({ ...product, quantity: 1 }); // Add product to cart with quantity
+    if (isUserLoggedIn()) {
+      addToCart({ ...product, quantity: 1 }); // Add product to cart with quantity
+    } else {
+      alert('You need to log in first to add items to the cart.');
+    }
   };
 
   return (
@@ -51,19 +54,22 @@ useEffect(()=>{
       <h2 className="home-page-title">Witaj w naszym sklepie!</h2>
       <p className="home-page-description">Znajdź najlepsze produkty w najlepszych cenach.</p>
 
-	  <div className="product-list-container">
+      <div className="product-list-container">
         {filteredProducts.map((product) => (
           <div key={product.id} className="product-card">
             <h3 className="product-name">{product.name}</h3>
             <p className="product-description">{product.description}</p>
             <p className="product-price">Cena: {product.price} PLN</p>
-            <button onClick={() => ShowInBasket(product)} className="product-buy-button">
-              Kup Produkt
+            <button
+              onClick={() => ShowInBasket(product)}
+              className="product-buy-button"
+              disabled={!isUserLoggedIn()} // Disable button if the user is not logged in
+            >
+              {isUserLoggedIn() ? 'Kup Produkt' : 'Zaloguj się, aby kupić'} {/* Change button text if not logged in */}
             </button>
           </div>
         ))}
       </div>
-	
     </main>
   );
 };

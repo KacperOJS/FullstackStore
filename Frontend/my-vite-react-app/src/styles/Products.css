@@ -1,46 +1,76 @@
-/* Products.css */
+/* General Container Styling */
 .cart-container {
 	padding: 20px;
 	font-family: Arial, sans-serif;
+	max-width: 800px;
+	margin: 0 auto;
   }
   
+  /* Item List Styling */
   .cart-item-list {
 	list-style-type: none;
 	padding: 0;
   }
   
+  /* Individual Cart Item */
   .cart-item {
 	display: flex;
 	justify-content: space-between;
-	padding: 10px;
-	border: 1px solid #ccc;
+	align-items: center;
+	padding: 15px;
+	border: 1px solid #ddd;
 	border-radius: 5px;
 	margin-bottom: 10px;
 	background-color: #f9f9f9;
-	transition: background-color 0.3s;
+	transition: box-shadow 0.3s;
   }
   
   .cart-item:hover {
-	background-color: #e9e9e9;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
+  /* Item Name */
   .cart-item-name {
 	font-weight: bold;
+	flex-grow: 2;
   }
   
+  /* Item Price */
   .cart-item-price {
+	margin-left: 20px;
+	font-weight: bold;
 	color: #333;
   }
   
+  /* Quantity Display */
   .cart-item-quantity {
+	margin-left: 10px;
 	color: #666;
   }
   
+  /* Remove Button Styling */
+  .remove-button {
+	background-color: #ff4d4f;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	padding: 5px 10px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+  }
+  
+  .remove-button:hover {
+	background-color: #e63b3b;
+  }
+  
+  /* Cart Summary Section */
   .cart-summary {
 	margin-top: 20px;
 	font-size: 1.2em;
+	text-align: right;
   }
   
+  /* Pay Button Styling */
   .pay-button {
 	background-color: #007aff;
 	color: white;
@@ -54,3 +84,4 @@
   .pay-button:hover {
 	background-color: #005bb5;
   }
+  

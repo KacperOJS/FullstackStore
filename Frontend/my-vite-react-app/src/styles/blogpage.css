@@ -1,0 +1,99 @@
+/* General Page Styling */
+.BlogPageContainer {
+	font-family: Arial, sans-serif;
+	background-color: #f9f9f9;
+	margin: 0;
+	padding: 0;
+  }
+  
+  .BlogContentWrapper {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: white;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header Section */
+  .BlogHeader {
+	text-align: center;
+	padding: 40px 0;
+	background-color: #282c34;
+	color: white;
+  }
+  
+  .BlogHeaderTitle {
+	margin: 0;
+	font-size: 3em;
+  }
+  
+  .BlogHeaderSubtitle {
+	font-size: 1.2em;
+  }
+  
+  /* Blog Sections */
+  .BlogSection {
+	margin-bottom: 40px;
+  }
+  
+  .BlogSectionTitle {
+	font-size: 2em;
+	border-bottom: 2px solid #ddd;
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+  }
+  
+  .BlogParagraph {
+	font-size: 1.1em;
+	line-height: 1.6;
+	margin-bottom: 15px;
+  }
+  
+  .BlogList {
+	list-style-type: disc;
+	padding-left: 20px;
+  }
+  
+  .BlogListItem {
+	font-size: 1.1em;
+	margin-bottom: 10px;
+  }
+  
+  .BlogArticle {
+	margin-top: 20px;
+  }
+  
+  /* Article Headings */
+  .BlogArticleTitle {
+	font-size: 1.5em;
+	margin-bottom: 10px;
+  }
+  
+  /* Footer Section */
+  .BlogFooter {
+	text-align: center;
+	padding: 20px;
+	background-color: #282c34;
+	color: white;
+  }
+  
+  .BlogFooterNav {
+	display: flex;
+	justify-content: center;
+	margin: 20px 0;
+  }
+  
+  .BlogFooterNavItem {
+	margin: 0 15px;
+  }
+  
+  .BlogFooterNavLink {
+	color: white;
+	text-decoration: none;
+	font-size: 1.1em;
+  }
+  
+  .BlogFooterNavLink:hover {
+	text-decoration: underline;
+  }
+  

@@ -20,6 +20,9 @@ import AdminPage from './pages/AdminPage';
 import { useState } from 'react';
 import Contact from './pages/Contact';
 import About from './pages/AboutPage';
+import MessageComponent from './pages/MessageComponent';
+import FAQComponent from './pages/Faq';
+import BlogPage from './pages/BlogPage';
 
 
 const stripePromise = loadStripe('pk_test_51PfPjHRp6D9QDtZzHJa3oQEsr9HQA8f6XMiGqe3NxRBkPz3xaXrqsu9BlNnPefMeVxYuk55GKDMJsEXD9kK0gNlA007x6gK31v');
@@ -36,8 +39,11 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home searchQuery={searchQuery} />} />
                 <Route path="/kontakt" element={<Contact />} />
+                <Route path="/blog" element={<BlogPage />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/faq" element={<FAQComponent />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/messages" element={<MessageComponent />} />
                 <Route path="/products/PaymentDetails" element={<ProductDetails />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />

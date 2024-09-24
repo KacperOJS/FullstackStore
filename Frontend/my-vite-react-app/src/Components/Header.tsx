@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import '../styles/Header.css'
 import { useCart } from '../context/CartContext'
+import { useState } from 'react';
 
 const Header = ({ setSearchQuery }: { setSearchQuery: (query: string) => void }) => {
   const { cartItems } = useCart();
@@ -9,6 +10,19 @@ const Header = ({ setSearchQuery }: { setSearchQuery: (query: string) => void })
 //   const isDashboard = location.pathname === '/dashboard';
   const isLoggedIn = localStorage.getItem('isLoggedIn');
   const isAdmin = localStorage.getItem('email');
+  const [messages, setMessages] = useState<string[]>([]); // Assuming messages are strings
+  const messageCount = messages.length; // Get the count of messages
+
+  // Function to handle message deletion
+  const deleteMessage = (index: number) => {
+    setMessages(messages.filter((_:any, i:any) => i !== index));
+  };
+
+  // Function to respond to a message (you might want to implement this based on your needs)
+  const respondToMessage = (index: number) => {
+    // Implement your response logic here
+    console.log(`Responding to message: ${messages[index]}`);
+  };
 
   return (
     <header className="header">
@@ -58,6 +72,17 @@ const Header = ({ setSearchQuery }: { setSearchQuery: (query: string) => void })
                   <svg width="34px" height="34px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000">
                     <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#000" />
                   </svg>
+                </Link>
+              </li>
+            )}
+			 {isAdmin === 'admin@gmail.com' && (
+              <li>
+                <Link to="/messages" className="nav-link message-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4l2-1h14l2 1z"></path>
+                    <path d="M3 7l2-1h14l2 1M3 7v1h18V7"></path>
+                  </svg>
+                  {messageCount > 0 && <span className="message-count">{messageCount}</span>}
                 </Link>
               </li>
             )}

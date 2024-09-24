@@ -1,22 +1,22 @@
-
+import React from 'react';
 import { useCart } from '../context/CartContext';
 import '../styles/Products.css';
 
 const Products: React.FC = () => {
-  const { cartItems } = useCart();
+  const { cartItems, removeFromCart } = useCart();
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   const finduserbyid = localStorage.getItem('userId');
+
   const handlePayment = async () => {
-    // Map cartItems to the structure required by Stripe
     const lineItems = cartItems.map(item => ({
       priceData: {
-        currency: 'PLN',  
+        currency: 'PLN',
         productData: {
-          name: item.name, 
+          name: item.name,
         },
-        unitAmount: item.price * 100,  
+        unitAmount: item.price * 100,
       },
-      quantity: item.quantity,  
+      quantity: item.quantity,
     }));
 
     try {
@@ -28,8 +28,8 @@ const Products: React.FC = () => {
         body: JSON.stringify({
           lineItems,
           successUrl: `${window.location.origin}/payment-success/`,
-        cancelUrl: `${window.location.origin}/payment-cancel/`,
-		  finduserbyid,
+          cancelUrl: `${window.location.origin}/payment-cancel/`,
+          finduserbyid,
         }),
       });
 
@@ -40,9 +40,7 @@ const Products: React.FC = () => {
       }
 
       const { url } = await response.json();
-      // Redirect to Stripe Checkout
       window.location.href = url;
-
     } catch (error) {
       console.error('An error occurred during payment processing:', error);
     }
@@ -50,7 +48,7 @@ const Products: React.FC = () => {
 
   return (
     <div className="cart-container">
-      <h1>Cart Items</h1>
+      <h2>Shopping Cart</h2>
       {cartItems.length === 0 ? (
         <p>No items in the cart.</p>
       ) : (
@@ -60,6 +58,12 @@ const Products: React.FC = () => {
               <span className="cart-item-name">{item.name}</span>
               <span className="cart-item-price">{item.price} PLN</span>
               <span className="cart-item-quantity">x {item.quantity}</span>
+              <button 
+                className="remove-button" 
+                onClick={() => removeFromCart(item.id)}
+              >
+                Remove
+              </button>
             </li>
           ))}
         </ul>
@@ -67,7 +71,7 @@ const Products: React.FC = () => {
       {cartItems.length > 0 && (
         <div className="cart-summary">
           <h2>Total Price: {totalPrice} PLN</h2>
-          <button onClick={handlePayment} className="pay-button">Pay</button>
+          <button onClick={handlePayment} className="pay-button">Proceed to Payment</button>
         </div>
       )}
     </div>

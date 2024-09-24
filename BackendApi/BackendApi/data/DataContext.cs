@@ -16,6 +16,7 @@ namespace BackendApi.data
         public DbSet<Sponsors> Sponsors { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<LogsOfPaymentCustomer> PaymentLog { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -78,6 +78,14 @@ builder.Services.AddAuthentication(options =>
 });
 
 var app = builder.Build();
+// Enable WebSocket support
+var webSocketOptions = new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromMinutes(2)
+};
+
+app.UseWebSockets(webSocketOptions);
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

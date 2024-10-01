@@ -6,7 +6,7 @@ const PaymentSuccess: React.FC = () => {
   const navigate = useNavigate(); // Updated to use useNavigate
 
   const handleReturn = () => {
-    navigate('/'); // Change this to the route you want to navigate to
+    navigate('/', { replace: true }); // Change this to the route you want to navigate to
   };
 
   return (

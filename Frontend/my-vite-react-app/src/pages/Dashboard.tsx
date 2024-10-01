@@ -14,6 +14,8 @@ interface Transaction {
   }
 
 const Dashboard: React.FC = () => {
+	  // State for daily payment totals
+	  const baseUrl = process.env.REACT_APP_BASE_URL || 'http://141.144.237.34:5250'; // Fallback to localhost if not set
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState<any>(null);
   const [transactions2, setTransactions2] = useState<any[]>([]);
@@ -25,7 +27,8 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const logDataUserTransactions = async ()=>{
-    const response = await fetch("http://localhost:5250/api/Logs/paymentlogs");
+	
+    const response = await fetch(`${baseUrl}/api/Logs/paymentlogs`);
 	const data: Transaction[] = await response.json();
 	const userId = localStorage.getItem('userId');
 	const filteredData = data.filter(transaction => transaction.customer.id === Number(userId));  
@@ -35,7 +38,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (!isLoggedIn) {
-      navigate('/login');
+      navigate('/login' , { replace: true });
     }
 
     const name = localStorage.getItem('username');

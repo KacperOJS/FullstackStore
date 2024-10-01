@@ -1,7 +1,9 @@
 using BackendApi.data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MySql.Data.MySqlClient;
 using StackExchange.Redis;
 using Stripe;
 using System.Text;
@@ -14,16 +16,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Configure database context
+var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 // Configure Stripe API Key
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 // Configure Redis connection
-
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
     try
@@ -35,7 +37,6 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     {
         // Log the exception (optional)
         Console.WriteLine($"Redis connection failed: {ex.Message}");
-
         return null;
     }
 });
@@ -43,15 +44,14 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 // Register RedisCacheService
 builder.Services.AddSingleton<RedisCacheService>();
 
-// Configure CORS
+// Configure CORS to allow all origins, methods, and headers
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.AllowAnyOrigin()
               .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
+              .AllowAnyHeader();
     });
 });
 
@@ -78,6 +78,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 var app = builder.Build();
+
 // Enable WebSocket support
 var webSocketOptions = new WebSocketOptions
 {
@@ -85,7 +86,6 @@ var webSocketOptions = new WebSocketOptions
 };
 
 app.UseWebSockets(webSocketOptions);
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -95,7 +95,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowAll"); // Apply the updated CORS policy
 app.UseAuthentication();
 app.UseAuthorization();
 

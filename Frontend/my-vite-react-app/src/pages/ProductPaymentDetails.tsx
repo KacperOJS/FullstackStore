@@ -2,6 +2,8 @@ import { useCart } from '../context/CartContext';
 import '../styles/PaymentDetails.css';
 
 const PaymentDetails: React.FC = () => {
+	  // State for daily payment totals
+	  const baseUrl = process.env.REACT_APP_BASE_URL || 'http://141.144.237.34:5250'; // Fallback to localhost if not set
   const { cartItems } = useCart();
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   const findUserById = localStorage.getItem('userId');
@@ -20,7 +22,7 @@ const PaymentDetails: React.FC = () => {
     }));
 
     try {
-      const response = await fetch('http://localhost:5250/api/Payments/create-checkout-session', {
+      const response = await fetch(`${baseUrl}/api/Payments/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

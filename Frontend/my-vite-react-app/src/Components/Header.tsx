@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import '../styles/Header.css'
 import { useCart } from '../context/CartContext'
-import { useState } from 'react';
+// import { useState } from 'react';
 
 const Header = ({ setSearchQuery }: { setSearchQuery: (query: string) => void }) => {
   const { cartItems } = useCart();
@@ -10,19 +10,16 @@ const Header = ({ setSearchQuery }: { setSearchQuery: (query: string) => void })
 //   const isDashboard = location.pathname === '/dashboard';
   const isLoggedIn = localStorage.getItem('isLoggedIn');
   const isAdmin = localStorage.getItem('email');
-  const [messages, setMessages] = useState<string[]>([]); // Assuming messages are strings
-  const messageCount = messages.length; // Get the count of messages
+//   const [messages, setMessages] = useState<string[]>([]); // Assuming messages are strings
+//   const messageCount = messages.length; // Get the count of messages
 
   // Function to handle message deletion
-  const deleteMessage = (index: number) => {
-    setMessages(messages.filter((_:any, i:any) => i !== index));
-  };
+//   const deleteMessage = (index: number) => {
+//     setMessages(messages.filter((_:any, i:any) => i !== index));
+//   };
 
   // Function to respond to a message (you might want to implement this based on your needs)
-  const respondToMessage = (index: number) => {
-    // Implement your response logic here
-    console.log(`Responding to message: ${messages[index]}`);
-  };
+
 
   return (
     <header className="header">
@@ -82,7 +79,7 @@ const Header = ({ setSearchQuery }: { setSearchQuery: (query: string) => void })
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4l2-1h14l2 1z"></path>
                     <path d="M3 7l2-1h14l2 1M3 7v1h18V7"></path>
                   </svg>
-                  {messageCount > 0 && <span className="message-count">{messageCount}</span>}
+                  {/* {messageCount > 0 && <span className="message-count">{messageCount}</span>} */}
                 </Link>
               </li>
             )}

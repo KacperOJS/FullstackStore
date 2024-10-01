@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import '../styles/Contact.css'; // Import styles
 
 const Contact: React.FC = () => {
+	  // State for daily payment totals
+	  const baseUrl = process.env.REACT_APP_BASE_URL || 'http://141.144.237.34:5250'; // Fallback to localhost if not set
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -30,7 +32,7 @@ const Contact: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5250/api/Contact', {
+      const response = await fetch(`${baseUrl}/api/Contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -9,6 +9,8 @@ interface Message {
 }
 
 const MessageComponent = () => {
+	  // State for daily payment totals
+	  const baseUrl = process.env.REACT_APP_BASE_URL || 'http://141.144.237.34:5250'; // Fallback to localhost if not set
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +19,7 @@ const MessageComponent = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch('http://localhost:5250/api/Contact');
+        const response = await fetch(`${baseUrl}/api/Contact`);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         setMessages(data);
@@ -34,7 +36,7 @@ const MessageComponent = () => {
   // Delete a message by ID
   const deleteMessage = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:5250/api/Contact/${id}`, {
+      const response = await fetch(`${baseUrl}/api/Contact/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) throw new Error('Failed to delete message');

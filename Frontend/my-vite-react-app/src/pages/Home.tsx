@@ -14,6 +14,8 @@ interface Product {
 const Home = ({ searchQuery }: { searchQuery: string }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const { addToCart } = useCart(); // Get addToCart function from context
+// src/Home.tsx or any other file
+  const baseUrl = process.env.REACT_APP_BASE_URL || 'http://141.144.237.34:5250'; // Fallback to localhost if not set
 
   // Function to check if user is logged in
   const isUserLoggedIn = () => {
@@ -22,12 +24,14 @@ const Home = ({ searchQuery }: { searchQuery: string }) => {
   }
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    if (products.length === 0) { // Only fetch if products are not already loaded
+      fetchProducts();
+    }
+  }, [products]);
 
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:5250/api/Products');
+      const response = await fetch(`${baseUrl}/api/Products`);
       const data: Product[] = await response.json();
       setProducts(data);
     } catch (error) {

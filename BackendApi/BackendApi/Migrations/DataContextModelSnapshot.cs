@@ -3,7 +3,6 @@ using System;
 using BackendApi.data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -18,17 +17,13 @@ namespace BackendApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.20")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("BackendApi.Models.LogsOfPaymentCustomer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -37,7 +32,7 @@ namespace BackendApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -55,23 +50,21 @@ namespace BackendApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("PaymentCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PaymentDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PaymentId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PaymentType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -84,19 +77,17 @@ namespace BackendApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("message")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -109,34 +100,32 @@ namespace BackendApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("id"));
-
                     b.Property<bool?>("IsAdmin")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int?>("Spend")
                         .HasColumnType("int");
 
                     b.Property<string>("city")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("password")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("phone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("state")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("zipcode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("id");
 
@@ -149,29 +138,27 @@ namespace BackendApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Currency")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("CustomerId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PaymentIntentId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -184,19 +171,17 @@ namespace BackendApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -209,21 +194,19 @@ namespace BackendApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -236,7 +219,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 1,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5224),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8023),
                             Description = "Latest model with cutting-edge technology.",
                             IsAvailable = true,
                             Name = "Smartphone",
@@ -245,7 +228,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 2,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5259),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8059),
                             Description = "High performance laptop for professionals.",
                             IsAvailable = true,
                             Name = "Laptop",
@@ -254,7 +237,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 3,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5262),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8062),
                             Description = "Noise-cancelling over-ear headphones.",
                             IsAvailable = true,
                             Name = "Headphones",
@@ -263,7 +246,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 4,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5263),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8064),
                             Description = "Smartwatch with health tracking features.",
                             IsAvailable = false,
                             Name = "Smartwatch",
@@ -272,7 +255,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 5,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5265),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8065),
                             Description = "Portable tablet with high-resolution display.",
                             IsAvailable = true,
                             Name = "Tablet",
@@ -281,7 +264,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 6,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5267),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8067),
                             Description = "High-performance gaming PC with the latest GPU.",
                             IsAvailable = true,
                             Name = "Gaming PC",
@@ -290,7 +273,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 7,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5268),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8069),
                             Description = "27-inch 144Hz gaming monitor for smooth gameplay.",
                             IsAvailable = true,
                             Name = "Gaming Monitor",
@@ -299,7 +282,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 8,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5270),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8071),
                             Description = "RGB mechanical keyboard with customizable keys.",
                             IsAvailable = true,
                             Name = "Mechanical Keyboard",
@@ -308,7 +291,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 9,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5272),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8073),
                             Description = "High-precision gaming mouse with adjustable DPI.",
                             IsAvailable = true,
                             Name = "Gaming Mouse",
@@ -317,7 +300,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 10,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5273),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8075),
                             Description = "Top-of-the-line graphics card for gaming.",
                             IsAvailable = true,
                             Name = "Graphics Card",
@@ -326,7 +309,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 11,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5275),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8076),
                             Description = "High-performance CPU for gaming and multitasking.",
                             IsAvailable = true,
                             Name = "Processor",
@@ -335,7 +318,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 12,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5277),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8078),
                             Description = "Gaming motherboard with RGB lighting and advanced features.",
                             IsAvailable = true,
                             Name = "Motherboard",
@@ -344,7 +327,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 13,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5279),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8080),
                             Description = "Ergonomic gaming chair for long hours of play.",
                             IsAvailable = true,
                             Name = "Gaming Chair",
@@ -353,7 +336,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 14,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5280),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8082),
                             Description = "1TB SSD for faster load times in games.",
                             IsAvailable = true,
                             Name = "SSD 1TB",
@@ -362,7 +345,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 15,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5282),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8084),
                             Description = "2TB HDD for additional storage.",
                             IsAvailable = true,
                             Name = "HDD 2TB",
@@ -371,7 +354,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 16,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5284),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8086),
                             Description = "Immersive VR headset for gaming.",
                             IsAvailable = true,
                             Name = "VR Headset",
@@ -380,7 +363,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 17,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5285),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8087),
                             Description = "Latest generation game console.",
                             IsAvailable = true,
                             Name = "Game Console",
@@ -389,7 +372,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 18,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5287),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8089),
                             Description = "Wireless controller for gaming consoles.",
                             IsAvailable = true,
                             Name = "Controller",
@@ -398,7 +381,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 19,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5290),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8092),
                             Description = "Spacious desk designed for gaming setups.",
                             IsAvailable = true,
                             Name = "Gaming Desk",
@@ -407,7 +390,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 20,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5291),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8093),
                             Description = "High-definition webcam for streaming.",
                             IsAvailable = true,
                             Name = "Webcam",
@@ -416,7 +399,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 21,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5293),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8095),
                             Description = "USB microphone for clear audio during streams.",
                             IsAvailable = true,
                             Name = "Microphone",
@@ -425,7 +408,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 22,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5295),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8097),
                             Description = "Capture card for streaming console gameplay.",
                             IsAvailable = true,
                             Name = "Capture Card",
@@ -434,7 +417,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 23,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5296),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8099),
                             Description = "Blue light blocking glasses for gamers.",
                             IsAvailable = true,
                             Name = "Gaming Glasses",
@@ -443,7 +426,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 24,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5298),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8101),
                             Description = "Monthly subscription for access to a library of games.",
                             IsAvailable = true,
                             Name = "Game Subscription",
@@ -452,7 +435,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 25,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5300),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8103),
                             Description = "Gift card for purchasing games online.",
                             IsAvailable = true,
                             Name = "Game Gift Card",
@@ -461,7 +444,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 26,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5302),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8105),
                             Description = "High-speed router optimized for gaming.",
                             IsAvailable = true,
                             Name = "Gaming Router",
@@ -470,7 +453,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 27,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5304),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8107),
                             Description = "500GB portable SSD for on-the-go gaming.",
                             IsAvailable = true,
                             Name = "Portable SSD 500GB",
@@ -479,7 +462,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 28,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5305),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8108),
                             Description = "Stereo headset with built-in microphone.",
                             IsAvailable = true,
                             Name = "Gaming Headset",
@@ -488,7 +471,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 29,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5307),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8110),
                             Description = "Versatile gamepad for various consoles.",
                             IsAvailable = true,
                             Name = "Gamepad",
@@ -497,7 +480,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 30,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5309),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8112),
                             Description = "Large RGB mouse pad for gaming.",
                             IsAvailable = true,
                             Name = "RGB Mouse Pad",
@@ -506,7 +489,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 31,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5310),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8114),
                             Description = "Storage solution for game discs and accessories.",
                             IsAvailable = true,
                             Name = "Game Storage Box",
@@ -515,7 +498,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 32,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5312),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8116),
                             Description = "Cooling pad for laptops during long gaming sessions.",
                             IsAvailable = true,
                             Name = "Gaming Cooling Pad",
@@ -524,7 +507,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 33,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5314),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8117),
                             Description = "VR games for immersive experiences.",
                             IsAvailable = true,
                             Name = "Virtual Reality Games",
@@ -533,7 +516,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 34,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5315),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8119),
                             Description = "Compact pouch for gaming accessories.",
                             IsAvailable = true,
                             Name = "Gaming Pouch",
@@ -542,7 +525,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 35,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5317),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8121),
                             Description = "Software for creating your own games.",
                             IsAvailable = true,
                             Name = "Game Development Software",
@@ -551,7 +534,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 36,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5319),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8123),
                             Description = "Art book featuring designs from popular games.",
                             IsAvailable = true,
                             Name = "Game Art Book",
@@ -560,7 +543,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 37,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5321),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8125),
                             Description = "Comprehensive strategy guide for popular games.",
                             IsAvailable = true,
                             Name = "Gaming Strategy Guide",
@@ -569,7 +552,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 38,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5323),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8127),
                             Description = "Comfortable t-shirt for gamers.",
                             IsAvailable = true,
                             Name = "Gaming T-shirt",
@@ -578,7 +561,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 39,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5325),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8129),
                             Description = "Warm hoodie for gamers.",
                             IsAvailable = true,
                             Name = "Gaming Hoodie",
@@ -587,7 +570,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 40,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5326),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8131),
                             Description = "Figures from popular game franchises.",
                             IsAvailable = true,
                             Name = "Collectible Figurines",
@@ -596,7 +579,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 41,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5328),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8132),
                             Description = "Cable management solution for gaming mice.",
                             IsAvailable = true,
                             Name = "Gaming Mouse Bungee",
@@ -605,7 +588,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 42,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5330),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8134),
                             Description = "Stand for organizing gaming consoles.",
                             IsAvailable = true,
                             Name = "Console Stand",
@@ -614,7 +597,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 43,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5331),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8136),
                             Description = "Holds multiple game cards securely.",
                             IsAvailable = true,
                             Name = "Game Card Holder",
@@ -623,7 +606,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 44,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5333),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8138),
                             Description = "Protective mat for gaming chairs.",
                             IsAvailable = true,
                             Name = "Gaming Chair Mat",
@@ -632,7 +615,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 45,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5335),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8140),
                             Description = "Lighting for enhancing streaming quality.",
                             IsAvailable = true,
                             Name = "Streaming Light",
@@ -641,7 +624,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 46,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5336),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8142),
                             Description = "Posters and wall art for gamers.",
                             IsAvailable = true,
                             Name = "Game Theme Wall Art",
@@ -650,7 +633,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 47,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5338),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8143),
                             Description = "Portable monitor for gaming on the go.",
                             IsAvailable = true,
                             Name = "Portable Gaming Monitor",
@@ -659,7 +642,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 48,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5340),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8145),
                             Description = "Gift card for purchasing games on Steam.",
                             IsAvailable = true,
                             Name = "Steam Gift Card",
@@ -668,7 +651,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 49,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5341),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8147),
                             Description = "Gift card for purchasing games on Epic Games Store.",
                             IsAvailable = true,
                             Name = "Epic Games Gift Card",
@@ -677,7 +660,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 50,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5343),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8149),
                             Description = "Monthly subscription box for gaming goodies.",
                             IsAvailable = true,
                             Name = "Gaming Subscription Box",
@@ -686,7 +669,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 51,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5345),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8151),
                             Description = "Full-sized arcade machine for home use.",
                             IsAvailable = true,
                             Name = "Arcade Machine",
@@ -695,7 +678,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 52,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5347),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8152),
                             Description = "Everything you need for a gaming LAN party.",
                             IsAvailable = true,
                             Name = "Gaming LAN Party Kit",
@@ -704,7 +687,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 53,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5348),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8154),
                             Description = "Guide to building the ultimate gaming setup.",
                             IsAvailable = true,
                             Name = "Pro Gaming Setup Guide",
@@ -713,7 +696,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 54,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5350),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8156),
                             Description = "Complete setup for game streaming.",
                             IsAvailable = true,
                             Name = "Game Streaming Setup",
@@ -722,7 +705,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 55,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5352),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8158),
                             Description = "Books about gaming culture.",
                             IsAvailable = true,
                             Name = "Gaming Lifestyle Book",
@@ -731,7 +714,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 56,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5354),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8160),
                             Description = "Console with classic games from the past.",
                             IsAvailable = true,
                             Name = "Retro Gaming Console",
@@ -740,7 +723,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 57,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5356),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8162),
                             Description = "Jewelry for gamers.",
                             IsAvailable = true,
                             Name = "Gaming Jewelry",
@@ -749,7 +732,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 58,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5358),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8164),
                             Description = "Costumes based on popular game characters.",
                             IsAvailable = true,
                             Name = "Game Character Costume",
@@ -758,7 +741,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 59,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5359),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8165),
                             Description = "Join a community of gamers.",
                             IsAvailable = true,
                             Name = "Gaming Community Membership",
@@ -767,7 +750,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 60,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5361),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8167),
                             Description = "Controller for mobile gaming.",
                             IsAvailable = true,
                             Name = "Mobile Gaming Controller",
@@ -776,7 +759,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 61,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5363),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8169),
                             Description = "Get a custom-built gaming PC.",
                             IsAvailable = true,
                             Name = "Custom PC Building Service",
@@ -785,7 +768,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 62,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5364),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8171),
                             Description = "Comfortable socks with game themes.",
                             IsAvailable = true,
                             Name = "Game Themed Socks",
@@ -794,7 +777,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 63,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5366),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8172),
                             Description = "Access to various games for a monthly fee.",
                             IsAvailable = true,
                             Name = "Gaming Subscription Service",
@@ -803,7 +786,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 64,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5368),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8174),
                             Description = "Your personal arcade at home.",
                             IsAvailable = true,
                             Name = "Home Arcade Cabinet",
@@ -812,7 +795,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 65,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5369),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8176),
                             Description = "Learn how to stream games effectively.",
                             IsAvailable = true,
                             Name = "Game Streaming Course",
@@ -821,7 +804,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 66,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5371),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8178),
                             Description = "Vinyl records of popular game soundtracks.",
                             IsAvailable = true,
                             Name = "Game Soundtrack Vinyl",
@@ -830,7 +813,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 67,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5373),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8180),
                             Description = "Glasses for enhanced 3D gaming experience.",
                             IsAvailable = true,
                             Name = "3D Gaming Glasses",
@@ -839,7 +822,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 68,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5375),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8181),
                             Description = "Portable console for gaming on the go.",
                             IsAvailable = true,
                             Name = "Gaming Handheld Console",
@@ -848,7 +831,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 69,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5376),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8183),
                             Description = "Recipes inspired by popular games.",
                             IsAvailable = true,
                             Name = "Gamer's Cookbook",
@@ -857,7 +840,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 70,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5378),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8185),
                             Description = "Card for purchasing in-game currency.",
                             IsAvailable = true,
                             Name = "In-Game Currency Card",
@@ -866,7 +849,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 71,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5380),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8187),
                             Description = "Pass for online gaming access.",
                             IsAvailable = true,
                             Name = "Online Game Pass",
@@ -875,7 +858,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 72,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5381),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8189),
                             Description = "Workout gear designed for gamers.",
                             IsAvailable = true,
                             Name = "Gaming Workout Gear",
@@ -884,7 +867,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 73,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5386),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8191),
                             Description = "Learn how to design your own games.",
                             IsAvailable = true,
                             Name = "Game Design Course",
@@ -893,7 +876,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 74,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5388),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8193),
                             Description = "Art prints from popular games.",
                             IsAvailable = true,
                             Name = "Game Art Prints",
@@ -902,7 +885,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 75,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5390),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8215),
                             Description = "Stay updated with the latest gaming news.",
                             IsAvailable = true,
                             Name = "Gaming News Subscription",
@@ -911,7 +894,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 76,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5391),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8217),
                             Description = "Tools for aspiring game developers.",
                             IsAvailable = true,
                             Name = "Game Development Toolkit",
@@ -920,7 +903,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 77,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5393),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8220),
                             Description = "Tickets for major e-sports events.",
                             IsAvailable = true,
                             Name = "E-sports Event Tickets",
@@ -929,7 +912,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 78,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5395),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8222),
                             Description = "Cushion for added comfort in gaming chairs.",
                             IsAvailable = true,
                             Name = "Gaming Chair Cushion",
@@ -938,7 +921,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 79,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5396),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8224),
                             Description = "Software for remaking classic games.",
                             IsAvailable = true,
                             Name = "Game Remake Software",
@@ -947,7 +930,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 80,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5398),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8226),
                             Description = "Book filled with gaming challenges to try.",
                             IsAvailable = true,
                             Name = "Gaming Challenge Book",
@@ -956,7 +939,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 81,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5400),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8228),
                             Description = "Organize your gaming accessories and gear.",
                             IsAvailable = true,
                             Name = "Gamer's Desk Organizer",
@@ -965,7 +948,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 82,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5402),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8230),
                             Description = "Stress ball for gamers.",
                             IsAvailable = true,
                             Name = "Gaming Stress Ball",
@@ -974,7 +957,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 83,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5403),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8235),
                             Description = "Protective skin for game controllers.",
                             IsAvailable = true,
                             Name = "Game Controller Skin",
@@ -983,7 +966,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 84,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5405),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8237),
                             Description = "All you need for a perfect game night.",
                             IsAvailable = true,
                             Name = "Game Night Kit",
@@ -992,7 +975,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 85,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5407),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8239),
                             Description = "Art installation based on video games.",
                             IsAvailable = true,
                             Name = "Video Game Art Installation",
@@ -1001,7 +984,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 86,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5408),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8240),
                             Description = "Learn how to market your games effectively.",
                             IsAvailable = true,
                             Name = "Game Marketing Course",
@@ -1010,7 +993,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 87,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5410),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8243),
                             Description = "Get a professional trailer for your game.",
                             IsAvailable = true,
                             Name = "Game Trailer Production",
@@ -1019,7 +1002,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 88,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5412),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8244),
                             Description = "One-on-one coaching for competitive gaming.",
                             IsAvailable = true,
                             Name = "Esports Coaching",
@@ -1028,7 +1011,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 89,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5413),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8246),
                             Description = "Bag designed for transporting gaming gear.",
                             IsAvailable = true,
                             Name = "Gaming Travel Bag",
@@ -1037,7 +1020,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 90,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5415),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8248),
                             Description = "Learn to develop games for mobile devices.",
                             IsAvailable = true,
                             Name = "Mobile Game Development Course",
@@ -1046,7 +1029,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 91,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5417),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8250),
                             Description = "Guide to help gamers relax and focus.",
                             IsAvailable = true,
                             Name = "Gamer's Meditation Guide",
@@ -1055,7 +1038,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 92,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5418),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8252),
                             Description = "Merchandise from popular game franchises.",
                             IsAvailable = true,
                             Name = "Game Merchandise",
@@ -1064,7 +1047,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 93,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5420),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8253),
                             Description = "Tools and resources for training in e-sports.",
                             IsAvailable = true,
                             Name = "E-sports Training Kit",
@@ -1073,7 +1056,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 94,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5422),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8255),
                             Description = "Access to exclusive gaming community forums.",
                             IsAvailable = true,
                             Name = "Gaming Community Forum Access",
@@ -1082,7 +1065,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 95,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5424),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8257),
                             Description = "Software for designing video games.",
                             IsAvailable = true,
                             Name = "Game Design Software",
@@ -1091,7 +1074,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 96,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5425),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8259),
                             Description = "CD of music from popular games.",
                             IsAvailable = true,
                             Name = "Game Soundtrack CD",
@@ -1100,7 +1083,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 97,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5427),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8260),
                             Description = "Cooling pad designed for gaming laptops.",
                             IsAvailable = true,
                             Name = "Gaming Laptop Cooling Pad",
@@ -1109,7 +1092,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 98,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5429),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8262),
                             Description = "Service for playtesting your game.",
                             IsAvailable = true,
                             Name = "Game Playtesting Service",
@@ -1118,7 +1101,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 99,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5430),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8264),
                             Description = "Stay updated on gaming culture and trends.",
                             IsAvailable = true,
                             Name = "Gaming Culture Magazine Subscription",
@@ -1127,7 +1110,7 @@ namespace BackendApi.Migrations
                         new
                         {
                             Id = 100,
-                            DateTime = new DateTime(2024, 9, 24, 13, 34, 58, 330, DateTimeKind.Local).AddTicks(5432),
+                            DateTime = new DateTime(2024, 9, 30, 12, 17, 54, 241, DateTimeKind.Local).AddTicks(8266),
                             Description = "A retreat focused on gamer wellness and community.",
                             IsAvailable = true,
                             Name = "Gamer's Wellness Retreat",
@@ -1138,15 +1121,15 @@ namespace BackendApi.Migrations
             modelBuilder.Entity("BackendApi.models.Sponsors", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 

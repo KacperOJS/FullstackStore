@@ -11,6 +11,8 @@ interface LoginResponse {
 }
 
 const Login = () => {
+	  // State for daily payment totals
+	  const baseUrl = process.env.REACT_APP_BASE_URL || 'http://141.144.237.34:5250'; // Fallback to localhost if not set
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -21,7 +23,7 @@ const Login = () => {
   const loginWithAPI = async (email: string, password: string) => {
     setError(null);
     try {
-      const response = await fetch("http://localhost:5250/api/Customer/login", {
+      const response = await fetch(`${baseUrl}/api/Customer/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +50,7 @@ const Login = () => {
       }
 
       // Redirect to the dashboard after successful login
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
 	  window.location.reload();
     } catch (error) {
       if (error instanceof Error) {

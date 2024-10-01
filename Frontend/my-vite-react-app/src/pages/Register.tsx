@@ -4,6 +4,8 @@ import "../styles/Register.css";
 
 const Register = () => {
 	const navigate = useNavigate();
+	  // State for daily payment totals
+	  const baseUrl = process.env.REACT_APP_BASE_URL || 'http://141.144.237.34:5250'; // Fallback to localhost if not set
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -13,7 +15,7 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
 	e.preventDefault();
 	try {
-	  const response = await fetch("http://localhost:5250/api/Customer", {
+	  const response = await fetch(`${baseUrl}/api/Customer`, {
 		method: "POST",
 		headers: {
 		  "Content-Type": "application/json",
@@ -27,7 +29,7 @@ const Register = () => {
   
 	  const data = await response.json();
 	  alert("Rejestracja udana");
-	  navigate("/login");
+	  navigate("/login", { replace: true });
 	  console.log("Rejestracja udana:", data);
 	 
 	} catch (error) {

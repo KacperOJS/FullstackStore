@@ -6,7 +6,7 @@ const PaymentCancel: React.FC = () => {
   const navigate = useNavigate();
 
   const handleReturn = () => {
-    navigate('/'); // Change this to the route you want to navigate to
+    navigate('/', { replace: true } ); // Change this to the route you want to navigate to
   };
 
   return (

@@ -93,9 +93,21 @@
               "target": "Package",
               "version": "[7.0.20, )"
             },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "MySql.Data.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.22, )"
+            },
             "PayPal": {
               "target": "Package",
               "version": "[1.9.1, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             },
             "Stripe.net": {
               "target": "Package",

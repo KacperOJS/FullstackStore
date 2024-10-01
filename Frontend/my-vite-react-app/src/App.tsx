@@ -23,46 +23,51 @@ import About from './pages/AboutPage';
 import MessageComponent from './pages/MessageComponent';
 import FAQComponent from './pages/Faq';
 import BlogPage from './pages/BlogPage';
+import { QueryClient, QueryClientProvider } from "react-query";
 
 
 const stripePromise = loadStripe('pk_test_51PfPjHRp6D9QDtZzHJa3oQEsr9HQA8f6XMiGqe3NxRBkPz3xaXrqsu9BlNnPefMeVxYuk55GKDMJsEXD9kK0gNlA007x6gK31v');
 
 function App() {
 	const [searchQuery, setSearchQuery] = useState('');
+	const queryClient = new QueryClient();
   return (
-    <Elements stripe={stripePromise}>
-      <CartProvider>
-        <Router>
-          <div className="app">
-            <Header setSearchQuery={setSearchQuery} />
-            <main style={{ minHeight: 'calc(100vh - 150px)' }}> {/* Adjust height based on header and footer sizes */}
-              <Routes>
-                <Route path="/" element={<Home searchQuery={searchQuery} />} />
-                <Route path="/kontakt" element={<Contact />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/faq" element={<FAQComponent />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/messages" element={<MessageComponent />} />
-                <Route path="/products/PaymentDetails" element={<ProductDetails />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/payment-success" element={<PaymentSuccess />} />
-                <Route path="/payment-cancel" element={<Paymentcancel />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/adminPanel" element={<AdminPage />} />
-                  {/* Add more protected routes here */}
-                </Route>
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </Router>
-      </CartProvider>
-    </Elements>
+	<QueryClientProvider client={queryClient}>
+		<Elements stripe={stripePromise}>
+		<CartProvider>
+			<Router>
+				
+			<div className="app">
+				<Header setSearchQuery={setSearchQuery} />
+				<main style={{ minHeight: 'calc(100vh - 150px)' }}> {/* Adjust height based on header and footer sizes */}
+				<Routes>
+					<Route path="/" element={<Home searchQuery={searchQuery} />} />
+					<Route path="/kontakt" element={<Contact />} />
+					<Route path="/blog" element={<BlogPage />} />
+					<Route path="/products" element={<Products />} />
+					<Route path="/faq" element={<FAQComponent />} />
+					<Route path="/about" element={<About />} />
+					<Route path="/messages" element={<MessageComponent />} />
+					<Route path="/products/PaymentDetails" element={<ProductDetails />} />
+					<Route path="/cart" element={<CartPage />} />
+					<Route path="/checkout" element={<CheckoutPage />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/payment-success" element={<PaymentSuccess />} />
+					<Route path="/payment-cancel" element={<Paymentcancel />} />
+					<Route element={<ProtectedRoute />}>
+						<Route path="/dashboard" element={<Dashboard />} />
+						<Route path="/adminPanel" element={<AdminPage />} />
+					{/* Add more protected routes here */}
+					</Route>
+				</Routes>
+				</main>
+				<Footer />
+			</div>
+			</Router>
+		</CartProvider>
+		</Elements>
+	</QueryClientProvider>
   );
 }
 

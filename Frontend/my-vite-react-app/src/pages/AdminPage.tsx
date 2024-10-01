@@ -22,6 +22,7 @@ interface User {
 
 const AdminPage: React.FC = () => {
   // State for daily payment totals
+  const baseUrl = process.env.REACT_APP_BASE_URL || 'http://141.144.237.34:5250'; // Fallback to localhost if not set
   const [moneyData, setMoneyData] = useState<number[]>([]);
   const [paymentLabels, setPaymentLabels] = useState<string[]>([]);
 
@@ -47,7 +48,7 @@ const AdminPage: React.FC = () => {
     const fetchChartData = async () => {
       try {
         // Fetch payment logs
-        const fetchedMoneyData: PaymentLog[] = await fetch('http://localhost:5250/api/Logs/paymentlogs')
+        const fetchedMoneyData: PaymentLog[] = await fetch(`${baseUrl}/api/Logs/paymentlogs`)
           .then(res => res.json());
 
         // Process daily payments
@@ -69,7 +70,7 @@ const AdminPage: React.FC = () => {
         setPaymentLabels(sortedPaymentDates);
 
         // Fetch all users
-        const fetchedUsers: User[] = await fetch('http://localhost:5250/api/Customer')
+        const fetchedUsers: User[] = await fetch(`${baseUrl}/api/Customer`)
           .then(res => res.json());
 
         // Filter out unnecessary fields by mapping
@@ -166,7 +167,7 @@ const AdminPage: React.FC = () => {
 
     if (window.confirm(`Are you sure you want to delete user "${selectedUser.name}"? This action cannot be undone.`)) {
       try {
-        const response = await fetch(`http://localhost:5250/api/Customer/${selectedUser.id}`, {
+        const response = await fetch(`${baseUrl}/api/Customer/${selectedUser.id}`, {
           method: 'DELETE',
         });
 
